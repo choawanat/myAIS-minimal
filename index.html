@@ -13,7 +13,7 @@
     if(mobileUA||coarse) document.documentElement.classList.add('is-mobile');
   })();
 </script>
-<title>myAIS Minimal v21</title>
+<title>myAIS Minimal v22</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -353,6 +353,13 @@
   .pin .pt small{font-size:10px;font-weight:500;color:var(--g-d)}
   .pin .pt small.few,.left.few{color:var(--danger)}
   .left{color:var(--g-d);font-weight:600}
+  /* v22: real product/shop photos for coupons, 1-point rewards and partner shops.
+     One look for all: same square crop, rounded, no text on the photo; the icon stays underneath as fallback. */
+  [data-ph]{position:relative;overflow:hidden}
+  [data-ph]>img.ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit;filter:saturate(.92) brightness(1.03)}
+  .rcard .im[data-ph]{height:96px}
+  .coupon .lg[data-ph]{width:64px;height:64px}
+  .shopcard .ico[data-ph]{width:60px;height:60px}
   .shopcard{margin:10px 18px 0;padding:12px;display:flex;align-items:center;gap:12px}
   .shopcard .ico{width:48px;height:48px;border-radius:15px}
   .shopcard .tx{flex:1;min-width:0}
@@ -608,16 +615,16 @@
     </div>
 
     <div class="sec"><h3>คูปองวันนี้</h3><span class="link" data-go="sub:redeemlist">ดูทั้งหมด</span></div>
-    <div class="card coupon" data-go="sub:coupon" data-title="เฟรนช์ฟรายส์ (M) ฟรี"><div class="lg t-sun"><i data-i="food"></i></div><div class="tx"><b>เฟรนช์ฟรายส์ (M) ฟรี</b><small>ร้านฟาสต์ฟู้ดที่ร่วมรายการ</small><span class="chip" style="margin-top:6px">99 คะแนน</span></div><button class="btn soft" data-go="toast:เก็บคูปองเรียบร้อยแล้ว">เก็บ</button></div>
-    <div class="card coupon" data-go="sub:coupon" data-title="ไอศกรีม ลด 50 บาท"><div class="lg t-rose"><i data-i="food"></i></div><div class="tx"><b>ไอศกรีม ลด 50 บาท</b><small>ขั้นต่ำ 300 บาท</small><span class="chip" style="margin-top:6px">100 คะแนน</span></div><button class="btn soft" data-go="toast:เก็บคูปองเรียบร้อยแล้ว">เก็บ</button></div>
-    <div class="card coupon" data-go="sub:coupon" data-title="ตั๋วหนังลด 40 บาท"><div class="lg t-lav"><i data-i="play"></i></div><div class="tx"><b>ตั๋วหนังลด 40 บาท</b><small>ทุกวันพุธ ทุกสาขา</small><span class="chip" style="margin-top:6px">80 คะแนน</span></div><button class="btn soft" data-go="toast:เก็บคูปองเรียบร้อยแล้ว">เก็บ</button></div>
+    <div class="card coupon" data-go="sub:coupon" data-title="เฟรนช์ฟรายส์ (M) ฟรี"><div data-ph="fries" class="lg t-sun"><i data-i="food"></i></div><div class="tx"><b>เฟรนช์ฟรายส์ (M) ฟรี</b><small>ร้านฟาสต์ฟู้ดที่ร่วมรายการ</small><span class="chip" style="margin-top:6px">99 คะแนน</span></div><button class="btn soft" data-go="toast:เก็บคูปองเรียบร้อยแล้ว">เก็บ</button></div>
+    <div class="card coupon" data-go="sub:coupon" data-title="ไอศกรีม ลด 50 บาท"><div data-ph="icecream" class="lg t-rose"><i data-i="food"></i></div><div class="tx"><b>ไอศกรีม ลด 50 บาท</b><small>ขั้นต่ำ 300 บาท</small><span class="chip" style="margin-top:6px">100 คะแนน</span></div><button class="btn soft" data-go="toast:เก็บคูปองเรียบร้อยแล้ว">เก็บ</button></div>
+    <div class="card coupon" data-go="sub:coupon" data-title="ตั๋วหนังลด 40 บาท"><div data-ph="popcorn" class="lg t-lav"><i data-i="play"></i></div><div class="tx"><b>ตั๋วหนังลด 40 บาท</b><small>ทุกวันพุธ ทุกสาขา</small><span class="chip" style="margin-top:6px">80 คะแนน</span></div><button class="btn soft" data-go="toast:เก็บคูปองเรียบร้อยแล้ว">เก็บ</button></div>
 
     <div class="sec"><h3>แลกได้ด้วย 1 คะแนน</h3></div>
     <div class="rgrid" style="padding-bottom:14px">
-      <div class="card rcard" data-go="sub:coupon" data-title="กระเป๋าผ้า"><div class="im t-mint"><i data-i="bag"></i></div><b>กระเป๋าผ้ารักษ์โลก</b><span class="chip">1 คะแนน</span></div>
-      <div class="card rcard" data-go="sub:coupon" data-title="เกี๊ยวซ่า 5 ชิ้น"><div class="im t-peach"><i data-i="food"></i></div><b>เกี๊ยวซ่า 5 ชิ้น</b><span class="chip">1 คะแนน</span></div>
-      <div class="card rcard" data-go="sub:coupon" data-title="ส่วนลดกาแฟ 20 บาท"><div class="im t-sun"><i data-i="coffee"></i></div><b>ส่วนลดกาแฟ 20 บาท</b><span class="chip">1 คะแนน</span></div>
-      <div class="card rcard" data-go="sub:coupon" data-title="เน็ตฟรี 1 วัน"><div class="im t-sky"><i data-i="wifi"></i></div><b>เน็ตฟรี 1 วัน 6Mbps</b><span class="chip">1 คะแนน</span></div>
+      <div class="card rcard" data-go="sub:coupon" data-title="กระเป๋าผ้า"><div data-ph="tote" class="im t-mint"><i data-i="bag"></i></div><b>กระเป๋าผ้ารักษ์โลก</b><span class="chip">1 คะแนน</span></div>
+      <div class="card rcard" data-go="sub:coupon" data-title="เกี๊ยวซ่า 5 ชิ้น"><div data-ph="gyoza" class="im t-peach"><i data-i="food"></i></div><b>เกี๊ยวซ่า 5 ชิ้น</b><span class="chip">1 คะแนน</span></div>
+      <div class="card rcard" data-go="sub:coupon" data-title="ส่วนลดกาแฟ 20 บาท"><div data-ph="coffee" class="im t-sun"><i data-i="coffee"></i></div><b>ส่วนลดกาแฟ 20 บาท</b><span class="chip">1 คะแนน</span></div>
+      <div class="card rcard" data-go="sub:coupon" data-title="เน็ตฟรี 1 วัน"><div data-ph="phone" class="im t-sky"><i data-i="wifi"></i></div><b>เน็ตฟรี 1 วัน 6Mbps</b><span class="chip">1 คะแนน</span></div>
     </div>
   </section>
 
@@ -885,22 +892,33 @@ function renderProfileNums(){
 // Pricing guide (not shown to users): 1 AIS Point ≈ 0.5 บาท of goods.
 // Shops flagged hot:true give more than that to promote themselves → "คุ้มพิเศษ" badge.
 const SHOPS = [
-  {name:'ร้านสะดวกซื้อ 24 ชม.', cat:'shop', icon:'bag', col:'mint', x:63, y:44, dist:'200 ม.', left:5, deal:'น้ำดื่ม 1 ขวด + ขนม 1 ห่อ', pts:40},
-  {name:'คาเฟ่ใบเตย', cat:'cafe', icon:'coffee', col:'sun', x:30, y:30, dist:'300 ม.', left:8, deal:'อเมริกาโน่เย็น 1 แก้ว', pts:60, hot:true},
-  {name:'ชานมไข่มุกบับเบิ้ล', cat:'cafe', icon:'coffee', col:'sun', x:42, y:72, dist:'350 ม.', left:10, deal:'ท็อปปิ้งไข่มุก + อัปไซซ์', pts:30},
-  {name:'ปั๊มน้ำมันสายรุ้ง', cat:'fuel', icon:'fuel', col:'sky', x:55, y:15, dist:'450 ม.', left:10, deal:'ล้างรถ 1 ครั้ง', pts:150},
-  {name:'ครัวข้าวหอม', cat:'food', icon:'food', col:'peach', x:76, y:80, dist:'500 ม.', left:10, deal:'ข้าวกะเพราไข่ดาว 1 จาน', pts:100},
-  {name:'ร้านยาใกล้บ้าน', cat:'shop', icon:'bag', col:'mint', x:57, y:93, dist:'600 ม.', left:12, deal:'หน้ากากอนามัย 1 กล่อง', pts:80},
-  {name:'มินต์ เบเกอรี่', cat:'cafe', icon:'coffee', col:'rose', x:71, y:30, dist:'650 ม.', left:9, deal:'ครัวซองต์เนยสด 1 ชิ้น', pts:90},
-  {name:'ชาบูหม้อร้อน', cat:'food', icon:'food', col:'peach', x:72, y:62, dist:'700 ม.', left:3, deal:'ชาบูฟรี 1 ที่ เมื่อมา 3 ท่าน', pts:250, hot:true},
-  {name:'ก๋วยเตี๋ยวลุงชัย', cat:'food', icon:'food', col:'peach', x:22, y:80, dist:'800 ม.', left:10, deal:'เกี๊ยวทอด 1 จาน', pts:40},
-  {name:'สปาเท้า ผ่อนคลาย', cat:'beauty', icon:'heart', col:'lav', x:16, y:49, dist:'900 ม.', left:6, deal:'นวดเท้า 30 นาที', pts:300, hot:true},
-  {name:'ร้านหนังสือเล่มโปรด', cat:'shop', icon:'bag', col:'lav', x:17, y:64, dist:'950 ม.', left:15, deal:'ที่คั่นหนังสือ + ปากกา', pts:50}
+  {name:'ร้านสะดวกซื้อ 24 ชม.', ph:'store', cat:'shop', icon:'bag', col:'mint', x:63, y:44, dist:'200 ม.', left:5, deal:'น้ำดื่ม 1 ขวด + ขนม 1 ห่อ', pts:40},
+  {name:'คาเฟ่ใบเตย', ph:'latte', cat:'cafe', icon:'coffee', col:'sun', x:30, y:30, dist:'300 ม.', left:8, deal:'อเมริกาโน่เย็น 1 แก้ว', pts:60, hot:true},
+  {name:'ชานมไข่มุกบับเบิ้ล', ph:'bubble', cat:'cafe', icon:'coffee', col:'sun', x:42, y:72, dist:'350 ม.', left:10, deal:'ท็อปปิ้งไข่มุก + อัปไซซ์', pts:30},
+  {name:'ปั๊มน้ำมันสายรุ้ง', ph:'wash', cat:'fuel', icon:'fuel', col:'sky', x:55, y:15, dist:'450 ม.', left:10, deal:'ล้างรถ 1 ครั้ง', pts:150},
+  {name:'ครัวข้าวหอม', ph:'rice', cat:'food', icon:'food', col:'peach', x:76, y:80, dist:'500 ม.', left:10, deal:'ข้าวกะเพราไข่ดาว 1 จาน', pts:100},
+  {name:'ร้านยาใกล้บ้าน', ph:'mask', cat:'shop', icon:'bag', col:'mint', x:57, y:93, dist:'600 ม.', left:12, deal:'หน้ากากอนามัย 1 กล่อง', pts:80},
+  {name:'มินต์ เบเกอรี่', ph:'croissant', cat:'cafe', icon:'coffee', col:'rose', x:71, y:30, dist:'650 ม.', left:9, deal:'ครัวซองต์เนยสด 1 ชิ้น', pts:90},
+  {name:'ชาบูหม้อร้อน', ph:'shabu', cat:'food', icon:'food', col:'peach', x:72, y:62, dist:'700 ม.', left:3, deal:'ชาบูฟรี 1 ที่ เมื่อมา 3 ท่าน', pts:250, hot:true},
+  {name:'ก๋วยเตี๋ยวลุงชัย', ph:'noodle', cat:'food', icon:'food', col:'peach', x:22, y:80, dist:'800 ม.', left:10, deal:'เกี๊ยวทอด 1 จาน', pts:40},
+  {name:'สปาเท้า ผ่อนคลาย', ph:'spa', cat:'beauty', icon:'heart', col:'lav', x:16, y:49, dist:'900 ม.', left:6, deal:'นวดเท้า 30 นาที', pts:300, hot:true},
+  {name:'ร้านหนังสือเล่มโปรด', ph:'books', cat:'shop', icon:'bag', col:'lav', x:17, y:64, dist:'950 ม.', left:15, deal:'ที่คั่นหนังสือ + ปากกา', pts:50}
 ];
 const NEAR_CATS = [['all','ทั้งหมด'],['food','อาหาร'],['cafe','คาเฟ่'],['shop','ช้อปปิ้ง'],['fuel','ปั๊มน้ำมัน'],['beauty','บิวตี้']];
 let nearCat = 'all', nearSel = 0, zoom = 1;
 const ME = {x:50, y:54};
 const leftFew = s => s.left <= 5;
+/* v22: stand-in photos (Unsplash) until partner shops supply their own */
+const PH = {fries:'1573080496219-bb080dd4f877',icecream:'1501443762994-82bd5dace89a',popcorn:'1585647347483-22b66260dfff',
+  tote:'1544816155-12df9643f363',gyoza:'1496116218417-1a781b1c416c',coffee:'1509042239860-f550ce710b93',phone:'1511707171634-5f897ff02aa9',
+  store:'1604719312566-8912e9227c6a',latte:'1461023058943-07fcbe16d735',bubble:'1558857563-b371033873b8',wash:'1607860108855-64acf2078ed9',
+  rice:'1512058564366-18510be2db19',mask:'1584634731339-252c581abfc5',croissant:'1530610476181-d83430b64dcd',shabu:'1617093727343-374698b1b08d',
+  noodle:'1555126634-323283e090fa',spa:'1544161515-4ab6ce6db874',books:'1524995997946-a1c2e315a42f'};
+function hydratePhotos(root=document){
+  root.querySelectorAll('[data-ph]').forEach(el=>{ const id=PH[el.dataset.ph]; if(!id||el.querySelector('img.ph')) return;
+    const im=new Image(); im.className='ph'; im.alt=''; im.onerror=()=>im.remove();
+    im.src=`https://images.unsplash.com/photo-${id}?w=240&h=240&fit=crop&auto=format&q=70`; el.appendChild(im); }); }
+new MutationObserver(()=>hydratePhotos()).observe(document.body,{childList:true,subtree:true});
 function renderNear(){
   $('nearChips').innerHTML = NEAR_CATS.map(([k,t])=>`<span class="${k===nearCat?'on':''}" data-go="fn:near:${k}">${t}</span>`).join('');
   const list = SHOPS.map((s,i)=>({s,i})).filter(({s})=>nearCat==='all'||s.cat===nearCat);
@@ -909,7 +927,7 @@ function renderNear(){
   $('mapArt').style.transform = `scale(${zoom})`;
   $('nearCount').textContent = list.length;
   const s = SHOPS[nearSel];
-  $('shopCard').innerHTML = s ? `<div class="card shopcard"><div class="ico t-${s.col}">${ic(s.icon)}</div>
+  $('shopCard').innerHTML = s ? `<div class="card shopcard"><div class="ico t-${s.col}" data-ph="${s.ph}">${ic(s.icon)}</div>
     <div class="tx"><b>${s.name}</b><small>ห่าง ${s.dist} · เปิดอยู่ ถึง 21:00 · <span class="left ${leftFew(s)?'few':''}">เหลือ ${s.left} สิทธิ์</span></small><div class="deal">แลกรับ ${s.deal}</div><div class="deal">ใช้ <span>${s.pts} พอยท์</span>${s.hot?' <span class="hot">คุ้มพิเศษ</span>':''}</div></div>
     <div class="acts"><button class="btn primary" data-go="toast:แลก ${s.pts} พอยท์ที่ ${s.name} แล้ว (จำลอง)">แลกเลย</button><button class="btn soft" data-go="toast:เปิดแผนที่นำทาง (จำลอง)">นำทาง</button></div></div>` : '';
 }
@@ -983,7 +1001,7 @@ const SUB = {
   lucky:()=>({title:'ลุ้นรางวัล',html:hero('LUCKY DRAW','ลุ้นโชคส่งท้ายปี<br>รวม 3 ล้านบาท','ใช้ 10 คะแนน / สิทธิ์','gift')+cta('ใช้ 10 คะแนน ลุ้นรางวัล','ส่งสิทธิ์ลุ้นรางวัลแล้ว (จำลอง)')}),
   coupon:t=>({title:t||'คูปอง',html:hero('COUPON',t||'คูปอง','','ticket')+kv([['ใช้คะแนน','ตามเงื่อนไขร้านค้า'],['หมดอายุ','31 ธ.ค. 69']])+cta('เก็บคูปอง','เก็บคูปองเรียบร้อยแล้ว')}),
   redeemlist:()=>({title:'แลกคะแนน',html:items(['กระเป๋าผ้า | 1 คะแนน','เกี๊ยวซ่า 5 ชิ้น | 1 คะแนน','ส่วนลดกาแฟ 20 บาท | 1 คะแนน','เน็ตฟรี 1 วัน | 1 คะแนน'],'gift')}),
-  nearby:()=>({title:'สิทธิพิเศษใกล้คุณ',html:'<div class="card list">'+[...SHOPS].sort((a,b)=>parseInt(a.dist)-parseInt(b.dist)).map(s=>`<div class="li" data-go="toast:${s.name} · ${s.deal} (จำลอง)"><div class="ico t-${s.col}">${ic(s.icon)}</div><div class="tx"><b>${s.name}</b><small>${s.dist} · <span class="left ${leftFew(s)?'few':''}">เหลือ ${s.left} สิทธิ์</span> · แลกรับ ${s.deal}</small>${s.hot?'<span class="hot">คุ้มพิเศษ</span>':''}</div><span class="r">${s.pts} P</span></div>`).join('')+'</div>'}),
+  nearby:()=>({title:'สิทธิพิเศษใกล้คุณ',html:'<div class="card list">'+[...SHOPS].sort((a,b)=>parseInt(a.dist)-parseInt(b.dist)).map(s=>`<div class="li" data-go="toast:${s.name} · ${s.deal} (จำลอง)"><div class="ico t-${s.col}" data-ph="${s.ph}">${ic(s.icon)}</div><div class="tx"><b>${s.name}</b><small>${s.dist} · <span class="left ${leftFew(s)?'few':''}">เหลือ ${s.left} สิทธิ์</span> · แลกรับ ${s.deal}</small>${s.hot?'<span class="hot">คุ้มพิเศษ</span>':''}</div><span class="r">${s.pts} P</span></div>`).join('')+'</div>'}),
   myqr:()=>({title:'QR ของฉัน',html:`<div class="card" style="text-align:center;padding:24px"><div style="width:180px;height:180px;margin:0 auto;border-radius:16px;background:var(--g-s);color:var(--g-d);display:flex;align-items:center;justify-content:center">${ic('qr').replace('class="i ','style="width:120px;height:120px" class="')}</div><div style="margin-top:12px;font-weight:600">${N().num}</div><div class="muted" style="font-size:12.5px">ให้ผู้อื่นสแกนเพื่อโอนคะแนน / เติมเงิน</div></div>`}),
   account:()=>({title:'ข้อมูลบัญชี',html:kv([['ชื่อ','ธนากร วงศ์xxx'],['อีเมล','thanakorn.w@example.com'],['เชื่อมต่อ','AIS ID']])}),
   settings:()=>({title:'ตั้งค่า',html:items(['ภาษา','การแจ้งเตือน','รหัสผ่าน / Face ID','วิดเจ็ตหน้าจอ | แสดงยอดคงเหลือบนหน้าจอโทรศัพท์','เกี่ยวกับแอป'],'gear')}),
@@ -1087,7 +1105,7 @@ let secs = 9*3600+55*60+3;
 setInterval(()=>{ secs=Math.max(0,secs-1); const p=n=>String(n).padStart(2,'0');
   $('timer').textContent=`${p(Math.floor(secs/3600))}:${p(Math.floor(secs/60)%60)}:${p(secs%60)}`; },1000);
 
-renderHome(); renderNear(); syncCurrent(); hydrate(); hydrateArt();
+renderHome(); renderNear(); syncCurrent(); hydrate(); hydrateArt(); hydratePhotos();
 </script>
 </body>
 </html>
