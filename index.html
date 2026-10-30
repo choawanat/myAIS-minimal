@@ -13,9 +13,9 @@
     if(mobileUA||coarse) document.documentElement.classList.add('is-mobile');
   })();
 </script>
-<title>myAIS Minimal v18</title>
+<title>myAIS Minimal v21</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   /* ---------- Design tokens: white + light green (AIS) ---------- */
   :root{
@@ -27,7 +27,7 @@
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   html,body{height:100%}
-  body{background:#dfe7d8;font-family:'IBM Plex Sans Thai',sans-serif;color:var(--text);
+  body{background:#dfe7d8;font-family:'Prompt',sans-serif /* v20: rounder, wider Thai face = easier to read, still friendly */;color:var(--text);
        display:flex;align-items:center;justify-content:center;min-height:100vh;padding:16px}
   button{font-family:inherit;color:inherit;border:0;background:none;cursor:pointer}
   input{font-family:inherit}
@@ -155,7 +155,7 @@
   .panel .pr b{color:var(--text);font-weight:600;font-size:13.5px}
   .panel .pr b.warn{color:var(--warn)} .panel .pr b.over{color:var(--danger)}
   .panel .bar{height:7px;margin-top:6px}
-  .panel .ft{display:flex;justify-content:space-between;font-size:11.5px;margin-top:8px;color:var(--muted)}
+  .panel .ft{display:flex;flex-wrap:wrap;justify-content:space-between;column-gap:8px;white-space:nowrap;font-size:11.5px;margin-top:8px;color:var(--muted)}
   .panel .ft b{font-weight:600;color:var(--g-dd)}
   .panel .ft b.warn{color:var(--warn)}
   .lrow{padding:12px 0;border-bottom:1px solid var(--line2)}
@@ -303,7 +303,7 @@
   .fchips::-webkit-scrollbar{display:none}
   .fchips span{flex:0 0 auto;font-size:12.5px;padding:6px 12px;border-radius:20px;background:#fff;border:1px solid var(--line);color:var(--muted);font-weight:500}
   .fchips span.on{background:var(--g);border-color:var(--g);color:#fff}
-  .map{margin:0 18px;height:236px;position:relative;overflow:hidden;padding:0}
+  .map{margin:0 18px;height:330px;position:relative;overflow:hidden;padding:0}
   .map>svg{position:absolute;inset:0;width:100%;height:100%}
   .me{position:absolute;left:50%;top:54%;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:#3b82c4;border:3px solid #fff;box-shadow:0 2px 6px rgba(59,130,196,.4);z-index:2}
   .me::after{content:"";position:absolute;inset:-14px;border-radius:50%;background:rgba(59,130,196,.18);animation:pulse 2s ease-out infinite}
@@ -348,6 +348,11 @@
   .hot{display:inline-block;font-size:10.5px;font-weight:600;color:#b07f06;background:#fdf1c8;border-radius:8px;padding:1px 7px;margin-left:4px}
   .li .hot{margin:3px 0 0}
   .pin.hotpin::before{content:"คุ้ม";position:absolute;top:-9px;right:-6px;font-size:9px;font-weight:700;color:#fff;background:#e0a10f;border-radius:7px;padding:0 5px;line-height:15px}
+  /* v21: pins show rights left under the distance; few left = red (no orange: competitor colour) */
+  .pin .pt{display:flex;flex-direction:column;line-height:1.15}
+  .pin .pt small{font-size:10px;font-weight:500;color:var(--g-d)}
+  .pin .pt small.few,.left.few{color:var(--danger)}
+  .left{color:var(--g-d);font-weight:600}
   .shopcard{margin:10px 18px 0;padding:12px;display:flex;align-items:center;gap:12px}
   .shopcard .ico{width:48px;height:48px;border-radius:15px}
   .shopcard .tx{flex:1;min-width:0}
@@ -810,7 +815,7 @@ const NUMBERS = [
   {num:'081-472-6614', kind:'mobile', type:'เติมเงิน', nick:'เบอร์ลูก', plan:'เน็ตรายเดือน 10GB',
    money:{label:'ยอดเงินคงเหลือ', v:'86.25', note:'ใช้ได้ถึง 12 ม.ค. 70'},
    data:{left:1.2, total:10, unit:'GB'}, call:{left:42,total:100},
-   exp:{label:'แพ็กเกจหมดอายุ', days:2, date:'30 ต.ค. 69'}, pts:1120, ptsExp:'80 คะแนน หมดอายุ 31 ธ.ค. 69', hint:'ต่อแพ็กเน็ตวันนี้ รับเพิ่ม 2 Points', cta:['เติมเงิน','sub:topup']},
+   exp:{label:'แพ็กเกจหมดอายุ', days:2, date:'30 ต.ค. 69', time:'14:35'}, pts:1120, ptsExp:'80 คะแนน หมดอายุ 31 ธ.ค. 69', hint:'ต่อแพ็กเน็ตวันนี้ รับเพิ่ม 2 Points', cta:['เติมเงิน','sub:topup']},
   {num:'880-312-4478', kind:'fibre', type:'AIS Fibre', nick:'เน็ตบ้าน', plan:'Fibre 1Gbps',
    money:{label:'ยอดค้างชำระ', v:'799.00', note:'เกินกำหนด 25 ต.ค. 69', over:true}, hint:'ชำระวันนี้ รับเพิ่ม 5 Points',
    data:{unlimited:true, label:'ไม่จำกัด', sub:'1Gbps / 500Mbps'}, call:null,
@@ -822,6 +827,8 @@ const brand = n => `<div class="brand ${n.kind}">${n.kind==='fibre'?'FIBRE':'AIS
 const fmt = n => n.toLocaleString('en-US');
 const isLowData = n => !n.data.unlimited && n.data.left/n.data.total < .2;
 const isSoon = n => n.exp.days <= 3;
+/* v19: show expiry clock time (hh:mm) when the number has one */
+const expTxt = n => n.exp.date + (n.exp.time ? ` · ${n.exp.time} น.` : '');
 const dataVal = n => n.data.unlimited ? n.data.label : `${n.data.left}<small>${n.data.unit}</small>`;
 
 /* ---------- Home: stacked number cards (v5) ----------
@@ -843,7 +850,7 @@ function renderHome(){
         <div class="pr"><span>${n.money.label}</span><b class="amt ${n.money.over?'over':''}">${n.money.v} บาท</b></div>
         <div class="pr"><span>◉ เน็ตคงเหลือ</span><b class="${isLowData(n)?'warn':''}">${n.data.unlimited?'ไม่จำกัด · '+n.data.sub:n.data.left+' GB / '+n.data.total+' GB'}</b></div>
         <div class="bar ${isLowData(n)?'low':''}"><i style="width:${pct}%"></i></div>
-        <div class="ft"><span>${n.exp.label} <b class="${isSoon(n)?'warn':''}">${n.exp.date} (อีก ${n.exp.days} วัน)</b></span><span>AIS Points <b>${fmt(n.pts)}</b></span></div>
+        <div class="ft"><span>${n.exp.time?n.exp.label.replace('แพ็กเกจ',''):n.exp.label} <b class="${isSoon(n)?'warn':''}">${n.exp.time?n.exp.date.replace(/ \d+$/,'')+' '+n.exp.time+' น.':n.exp.date} (อีก ${n.exp.days} วัน)</b></span><span>AIS Points <b>${fmt(n.pts)}</b></span></div>
       </div></div>`; }).join('');
 }
 function syncCurrent(){
@@ -865,7 +872,7 @@ function renderPack(){
   const call = n.call ? `<div class="bar-l"><span>โทรทุกเครือข่าย</span><b>เหลือ ${n.call.left} / ${n.call.total} นาที</b></div><div class="bar"><i style="width:${Math.round(n.call.left/n.call.total*100)}%"></i></div>` : '';
   $('mypack').innerHTML = `<div class="card mypack">
     <div class="row between"><div><div class="muted" style="font-size:12.5px">แพ็กเกจของฉัน</div><div style="font-size:18px;font-weight:600">${n.plan}</div></div>
-    <span class="chip ${isSoon(n)?'warn':''}">${n.exp.label.replace('แพ็กเกจ','')} ${n.exp.date}</span></div>
+    <span class="chip ${isSoon(n)?'warn':''}">${n.exp.label.replace('แพ็กเกจ','')} ${expTxt(n)}</span></div>
     ${bars}${call}
     <div class="nc-act" style="margin-top:16px"><button class="btn primary" data-go="sub:mypack">${n.type==='เติมเงิน'?'ต่ออายุแพ็ก':'ดูรายละเอียด'}</button><button class="btn soft" data-go="sub:mainpkg">เปลี่ยนแพ็กเกจ</button></div>
   </div>`;
@@ -878,31 +885,32 @@ function renderProfileNums(){
 // Pricing guide (not shown to users): 1 AIS Point ≈ 0.5 บาท of goods.
 // Shops flagged hot:true give more than that to promote themselves → "คุ้มพิเศษ" badge.
 const SHOPS = [
-  {name:'ร้านสะดวกซื้อ 24 ชม.', cat:'shop', icon:'bag', col:'mint', x:63, y:44, dist:'200 ม.', deal:'น้ำดื่ม 1 ขวด + ขนม 1 ห่อ', pts:40},
-  {name:'คาเฟ่ใบเตย', cat:'cafe', icon:'coffee', col:'sun', x:30, y:30, dist:'300 ม.', deal:'อเมริกาโน่เย็น 1 แก้ว', pts:60, hot:true},
-  {name:'ชานมไข่มุกบับเบิ้ล', cat:'cafe', icon:'coffee', col:'sun', x:42, y:72, dist:'350 ม.', deal:'ท็อปปิ้งไข่มุก + อัปไซซ์', pts:30},
-  {name:'ปั๊มน้ำมันสายรุ้ง', cat:'fuel', icon:'fuel', col:'sky', x:55, y:15, dist:'450 ม.', deal:'ล้างรถ 1 ครั้ง', pts:150},
-  {name:'ครัวข้าวหอม', cat:'food', icon:'food', col:'peach', x:76, y:80, dist:'500 ม.', deal:'ข้าวกะเพราไข่ดาว 1 จาน', pts:100},
-  {name:'ร้านยาใกล้บ้าน', cat:'shop', icon:'bag', col:'mint', x:57, y:93, dist:'600 ม.', deal:'หน้ากากอนามัย 1 กล่อง', pts:80},
-  {name:'มินต์ เบเกอรี่', cat:'cafe', icon:'coffee', col:'rose', x:75, y:30, dist:'650 ม.', deal:'ครัวซองต์เนยสด 1 ชิ้น', pts:90},
-  {name:'ชาบูหม้อร้อน', cat:'food', icon:'food', col:'peach', x:72, y:62, dist:'700 ม.', deal:'ชาบูฟรี 1 ที่ เมื่อมา 3 ท่าน', pts:250, hot:true},
-  {name:'ก๋วยเตี๋ยวลุงชัย', cat:'food', icon:'food', col:'peach', x:22, y:80, dist:'800 ม.', deal:'เกี๊ยวทอด 1 จาน', pts:40},
-  {name:'สปาเท้า ผ่อนคลาย', cat:'beauty', icon:'heart', col:'lav', x:12, y:49, dist:'900 ม.', deal:'นวดเท้า 30 นาที', pts:300, hot:true},
-  {name:'ร้านหนังสือเล่มโปรด', cat:'shop', icon:'bag', col:'lav', x:17, y:64, dist:'950 ม.', deal:'ที่คั่นหนังสือ + ปากกา', pts:50}
+  {name:'ร้านสะดวกซื้อ 24 ชม.', cat:'shop', icon:'bag', col:'mint', x:63, y:44, dist:'200 ม.', left:5, deal:'น้ำดื่ม 1 ขวด + ขนม 1 ห่อ', pts:40},
+  {name:'คาเฟ่ใบเตย', cat:'cafe', icon:'coffee', col:'sun', x:30, y:30, dist:'300 ม.', left:8, deal:'อเมริกาโน่เย็น 1 แก้ว', pts:60, hot:true},
+  {name:'ชานมไข่มุกบับเบิ้ล', cat:'cafe', icon:'coffee', col:'sun', x:42, y:72, dist:'350 ม.', left:10, deal:'ท็อปปิ้งไข่มุก + อัปไซซ์', pts:30},
+  {name:'ปั๊มน้ำมันสายรุ้ง', cat:'fuel', icon:'fuel', col:'sky', x:55, y:15, dist:'450 ม.', left:10, deal:'ล้างรถ 1 ครั้ง', pts:150},
+  {name:'ครัวข้าวหอม', cat:'food', icon:'food', col:'peach', x:76, y:80, dist:'500 ม.', left:10, deal:'ข้าวกะเพราไข่ดาว 1 จาน', pts:100},
+  {name:'ร้านยาใกล้บ้าน', cat:'shop', icon:'bag', col:'mint', x:57, y:93, dist:'600 ม.', left:12, deal:'หน้ากากอนามัย 1 กล่อง', pts:80},
+  {name:'มินต์ เบเกอรี่', cat:'cafe', icon:'coffee', col:'rose', x:71, y:30, dist:'650 ม.', left:9, deal:'ครัวซองต์เนยสด 1 ชิ้น', pts:90},
+  {name:'ชาบูหม้อร้อน', cat:'food', icon:'food', col:'peach', x:72, y:62, dist:'700 ม.', left:3, deal:'ชาบูฟรี 1 ที่ เมื่อมา 3 ท่าน', pts:250, hot:true},
+  {name:'ก๋วยเตี๋ยวลุงชัย', cat:'food', icon:'food', col:'peach', x:22, y:80, dist:'800 ม.', left:10, deal:'เกี๊ยวทอด 1 จาน', pts:40},
+  {name:'สปาเท้า ผ่อนคลาย', cat:'beauty', icon:'heart', col:'lav', x:16, y:49, dist:'900 ม.', left:6, deal:'นวดเท้า 30 นาที', pts:300, hot:true},
+  {name:'ร้านหนังสือเล่มโปรด', cat:'shop', icon:'bag', col:'lav', x:17, y:64, dist:'950 ม.', left:15, deal:'ที่คั่นหนังสือ + ปากกา', pts:50}
 ];
 const NEAR_CATS = [['all','ทั้งหมด'],['food','อาหาร'],['cafe','คาเฟ่'],['shop','ช้อปปิ้ง'],['fuel','ปั๊มน้ำมัน'],['beauty','บิวตี้']];
 let nearCat = 'all', nearSel = 0, zoom = 1;
 const ME = {x:50, y:54};
+const leftFew = s => s.left <= 5;
 function renderNear(){
   $('nearChips').innerHTML = NEAR_CATS.map(([k,t])=>`<span class="${k===nearCat?'on':''}" data-go="fn:near:${k}">${t}</span>`).join('');
   const list = SHOPS.map((s,i)=>({s,i})).filter(({s})=>nearCat==='all'||s.cat===nearCat);
   if (!list.some(({i})=>i===nearSel)) nearSel = list.length ? list[0].i : -1;
-  $('pins').innerHTML = list.map(({s,i})=>`<div class="pin ${i===nearSel?'on':''} ${s.hot?'hotpin':''}" style="left:${ME.x+(s.x-ME.x)*zoom}%;top:${ME.y+(s.y-ME.y)*zoom}%" data-go="fn:shop:${i}"><span class="pi t-${s.col}">${ic(s.icon)}</span>${s.dist}</div>`).join('');
+  $('pins').innerHTML = list.map(({s,i})=>`<div class="pin ${i===nearSel?'on':''} ${s.hot?'hotpin':''}" style="left:${ME.x+(s.x-ME.x)*zoom}%;top:${ME.y+(s.y-ME.y)*zoom}%" data-go="fn:shop:${i}"><span class="pi t-${s.col}">${ic(s.icon)}</span><span class="pt">${s.dist}<small class="${leftFew(s)?'few':''}">เหลือ ${s.left} สิทธิ์</small></span></div>`).join('');
   $('mapArt').style.transform = `scale(${zoom})`;
   $('nearCount').textContent = list.length;
   const s = SHOPS[nearSel];
   $('shopCard').innerHTML = s ? `<div class="card shopcard"><div class="ico t-${s.col}">${ic(s.icon)}</div>
-    <div class="tx"><b>${s.name}</b><small>ห่าง ${s.dist} · เปิดอยู่ ถึง 21:00</small><div class="deal">แลกรับ ${s.deal}</div><div class="deal">ใช้ <span>${s.pts} พอยท์</span>${s.hot?' <span class="hot">คุ้มพิเศษ</span>':''}</div></div>
+    <div class="tx"><b>${s.name}</b><small>ห่าง ${s.dist} · เปิดอยู่ ถึง 21:00 · <span class="left ${leftFew(s)?'few':''}">เหลือ ${s.left} สิทธิ์</span></small><div class="deal">แลกรับ ${s.deal}</div><div class="deal">ใช้ <span>${s.pts} พอยท์</span>${s.hot?' <span class="hot">คุ้มพิเศษ</span>':''}</div></div>
     <div class="acts"><button class="btn primary" data-go="toast:แลก ${s.pts} พอยท์ที่ ${s.name} แล้ว (จำลอง)">แลกเลย</button><button class="btn soft" data-go="toast:เปิดแผนที่นำทาง (จำลอง)">นำทาง</button></div></div>` : '';
 }
 
@@ -926,8 +934,8 @@ const SUB = {
   numdetail:()=>{ const n=N(); const pct = n.data.unlimited?100:Math.round(n.data.left/n.data.total*100);
     return {title:n.num, html:`<div class="card"><div class="ring-wrap">${ring(pct, n.data.unlimited?'∞':n.data.left+' GB', 'เน็ตคงเหลือ')}
       <div><div class="muted" style="font-size:12.5px">${n.nick} · ${n.type}</div><div style="font-size:17px;font-weight:600">${n.plan}</div>
-      <div style="margin-top:8px"><span class="chip ${isSoon(n)?'warn':''}">${n.exp.label} ${n.exp.date}</span></div></div></div></div>`+
-      kv([[n.money.label, `<span class="amt">${n.money.v} บาท</span>`],['หมายเหตุ', n.money.note],[n.exp.label, `${n.exp.date} (อีก ${n.exp.days} วัน)`],['AIS Points', fmt(n.pts)+' คะแนน'], ...(n.call?[['โทรคงเหลือ', n.call.left+' นาที']]:[])])+
+      <div style="margin-top:8px"><span class="chip ${isSoon(n)?'warn':''}">${n.exp.label} ${expTxt(n)}</span></div></div></div></div>`+
+      kv([[n.money.label, `<span class="amt">${n.money.v} บาท</span>`],['หมายเหตุ', n.money.note],[n.exp.label, `${expTxt(n)} (อีก ${n.exp.days} วัน)`],['AIS Points', fmt(n.pts)+' คะแนน'], ...(n.call?[['โทรคงเหลือ', n.call.left+' นาที']]:[])])+
       `<div class="row" style="gap:8px"><button class="btn primary" style="flex:1" data-go="${n.cta[1]}">${n.cta[0]}</button><button class="btn soft" style="flex:1" data-go="sub:usage">ดูการใช้งาน</button></div>`}; },
   search:()=>({title:'ค้นหา',html:`<div class="field">${ic('search')}<input placeholder="ค้นหาแพ็กเกจ, สิทธิพิเศษ, บริการ" style="margin-left:8px"></div>
     <div class="lbl">ค้นหายอดนิยม</div>${items(['เติมเงิน','จ่ายบิล','แพ็กเสริมเน็ต','โรมมิ่ง','แลกคะแนน AIS Points'],'search')}`}),
@@ -962,7 +970,7 @@ const SUB = {
   insure:()=>({title:'ประกันมือถือ',html:hero('INSURANCE','คุ้มครองจอแตก<br>ตกน้ำ หาย','เริ่ม 99 บาท/เดือน','shield')+cta('สมัครประกัน','สมัครสำเร็จ (จำลอง)')}),
   pkg:t=>({title:t||'รายละเอียดแพ็กเกจ',html:hero('PACKAGE',t||'แพ็กเกจ','สมัครให้ '+N().num,'box')+kv([['ระยะเวลา','ตามแพ็กเกจ'],['เริ่มใช้งาน','ทันทีหลังสมัคร'],['เงื่อนไข','ราคารวม VAT แล้ว']])+cta('สมัครแพ็กเกจ','สมัครแพ็กเกจสำเร็จ (จำลอง)')}),
   promo:t=>({title:t||'โปรโมชั่น',html:hero('PROMOTION',t||'','','gift')+'<div class="card muted" style="font-size:13.5px">รายละเอียดโปรโมชั่น เงื่อนไขเป็นไปตามที่บริษัทกำหนด</div>'+cta('สนใจ','บันทึกความสนใจแล้ว (จำลอง)')}),
-  mypack:()=>({title:'แพ็กเกจของฉัน',html:kv([['หมายเลข',N().num],['แพ็กเกจหลัก',N().plan],[N().exp.label,N().exp.date]])+cta(N().type==='เติมเงิน'?'ต่ออายุแพ็ก':'เปลี่ยนแพ็กเกจ','ทำรายการสำเร็จ (จำลอง)')}),
+  mypack:()=>({title:'แพ็กเกจของฉัน',html:kv([['หมายเลข',N().num],['แพ็กเกจหลัก',N().plan],[N().exp.label,expTxt(N())]])+cta(N().type==='เติมเงิน'?'ต่ออายุแพ็ก':'เปลี่ยนแพ็กเกจ','ทำรายการสำเร็จ (จำลอง)')}),
   mainpkg:()=>({title:'แพ็กหลัก',html:items(['5G Fixxy 35GB | 449 บาท/เดือน','5G Max Speed 25GB | 299 บาท/เดือน','5G Smart 599 | 599 บาท/เดือน','5G Unlimited | 999 บาท/เดือน'],'box')}),
   ent:()=>({title:'บันเทิง',html:items(['PLAY ALL | 199 บาท/เดือน','PLAY ASIAN | 99 บาท/เดือน','HBO Max | 99 บาท/เดือน','Netflix | 169 บาท/เดือน'],'play')}),
   fibre:()=>({title:'AIS Fibre',html:hero('AIS FIBRE','เน็ตบ้าน 1Gbps<br>เริ่ม 599 บาท','ติดตั้งฟรี','router')+items(['500/500 Mbps | 599 บาท','1000/500 Mbps | 799 บาท','2000/1000 Mbps | 1,299 บาท'],'router')}),
@@ -975,7 +983,7 @@ const SUB = {
   lucky:()=>({title:'ลุ้นรางวัล',html:hero('LUCKY DRAW','ลุ้นโชคส่งท้ายปี<br>รวม 3 ล้านบาท','ใช้ 10 คะแนน / สิทธิ์','gift')+cta('ใช้ 10 คะแนน ลุ้นรางวัล','ส่งสิทธิ์ลุ้นรางวัลแล้ว (จำลอง)')}),
   coupon:t=>({title:t||'คูปอง',html:hero('COUPON',t||'คูปอง','','ticket')+kv([['ใช้คะแนน','ตามเงื่อนไขร้านค้า'],['หมดอายุ','31 ธ.ค. 69']])+cta('เก็บคูปอง','เก็บคูปองเรียบร้อยแล้ว')}),
   redeemlist:()=>({title:'แลกคะแนน',html:items(['กระเป๋าผ้า | 1 คะแนน','เกี๊ยวซ่า 5 ชิ้น | 1 คะแนน','ส่วนลดกาแฟ 20 บาท | 1 คะแนน','เน็ตฟรี 1 วัน | 1 คะแนน'],'gift')}),
-  nearby:()=>({title:'สิทธิพิเศษใกล้คุณ',html:'<div class="card list">'+[...SHOPS].sort((a,b)=>parseInt(a.dist)-parseInt(b.dist)).map(s=>`<div class="li" data-go="toast:${s.name} · ${s.deal} (จำลอง)"><div class="ico t-${s.col}">${ic(s.icon)}</div><div class="tx"><b>${s.name}</b><small>${s.dist} · แลกรับ ${s.deal}</small>${s.hot?'<span class="hot">คุ้มพิเศษ</span>':''}</div><span class="r">${s.pts} P</span></div>`).join('')+'</div>'}),
+  nearby:()=>({title:'สิทธิพิเศษใกล้คุณ',html:'<div class="card list">'+[...SHOPS].sort((a,b)=>parseInt(a.dist)-parseInt(b.dist)).map(s=>`<div class="li" data-go="toast:${s.name} · ${s.deal} (จำลอง)"><div class="ico t-${s.col}">${ic(s.icon)}</div><div class="tx"><b>${s.name}</b><small>${s.dist} · <span class="left ${leftFew(s)?'few':''}">เหลือ ${s.left} สิทธิ์</span> · แลกรับ ${s.deal}</small>${s.hot?'<span class="hot">คุ้มพิเศษ</span>':''}</div><span class="r">${s.pts} P</span></div>`).join('')+'</div>'}),
   myqr:()=>({title:'QR ของฉัน',html:`<div class="card" style="text-align:center;padding:24px"><div style="width:180px;height:180px;margin:0 auto;border-radius:16px;background:var(--g-s);color:var(--g-d);display:flex;align-items:center;justify-content:center">${ic('qr').replace('class="i ','style="width:120px;height:120px" class="')}</div><div style="margin-top:12px;font-weight:600">${N().num}</div><div class="muted" style="font-size:12.5px">ให้ผู้อื่นสแกนเพื่อโอนคะแนน / เติมเงิน</div></div>`}),
   account:()=>({title:'ข้อมูลบัญชี',html:kv([['ชื่อ','ธนากร วงศ์xxx'],['อีเมล','thanakorn.w@example.com'],['เชื่อมต่อ','AIS ID']])}),
   settings:()=>({title:'ตั้งค่า',html:items(['ภาษา','การแจ้งเตือน','รหัสผ่าน / Face ID','วิดเจ็ตหน้าจอ | แสดงยอดคงเหลือบนหน้าจอโทรศัพท์','เกี่ยวกับแอป'],'gear')}),
