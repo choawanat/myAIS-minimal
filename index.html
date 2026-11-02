@@ -13,7 +13,7 @@
     if(mobileUA||coarse) document.documentElement.classList.add('is-mobile');
   })();
 </script>
-<title>myAIS Minimal v22</title>
+<title>myAIS Minimal v36</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -89,6 +89,7 @@
   .ico{width:44px;height:44px;border-radius:14px;background:var(--g-s);color:var(--g-d);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
   .ico svg{width:22px;height:22px}
   .amt{transition:filter .2s}
+  .icon-btn.js-privbtn.on{background:var(--g-s);border-color:var(--g-s2);color:var(--g-d)}
   .hide-amt .amt{filter:blur(7px);user-select:none}
 
   /* ---------- Home ---------- */
@@ -360,6 +361,117 @@
   .rcard .im[data-ph]{height:96px}
   .coupon .lg[data-ph]{width:64px;height:64px}
   .shopcard .ico[data-ph]{width:60px;height:60px}
+  /* v26: two tiers with room to breathe; full number so people know which line */
+  .ptsalert{margin:0 18px;padding:16px;border:1.5px solid #f0c48a} /* v34: same orange frame as the 'เน็ตใกล้หมด' card */
+  .ptsalert .top{display:flex;align-items:center;gap:12px}
+  .ptsalert .ico{width:44px;height:44px;border-radius:14px}
+  .ptsalert .tx{flex:1;min-width:0}
+  .ptsalert .tx b{display:block;font-size:17px;font-weight:600}
+  .ptsalert small{display:block;font-size:12px;color:var(--muted);margin-top:1px}
+  .ptsalert .num{text-align:right}
+  .ptsalert .num b{display:block;font-size:14.5px;font-weight:600;letter-spacing:.2px}
+  .ptsalert .foot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid var(--line2);font-size:13px;color:var(--muted)}
+  .ptsalert .go{font-weight:600;color:var(--g-d);white-space:nowrap}
+  .billhead{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);margin:4px 2px 8px}
+  .billlist{padding:4px 14px}
+  .billrow{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line2);cursor:pointer}
+  .billrow:last-child{border-bottom:0}
+  .billrow .brand{width:38px;height:38px;border-radius:50%;font-size:9px}
+  .billrow .tx{flex:1;min-width:0}
+  .billrow .tx b{display:block;font-size:15px;font-weight:600}
+  .billrow .tx small{font-size:12px;color:var(--muted)}
+  .billrow .tx small{display:block;line-height:1.4}
+  .billrow .tx small.due.over{color:var(--danger)}
+  .billrow>.amt{font-size:15px;font-weight:600;white-space:nowrap}
+  .billrow.off{opacity:.55;cursor:default}
+  .billrow.off .link{opacity:1}
+  .chk{width:22px;height:22px;border-radius:7px;border:2px solid #cdd7c6;display:flex;align-items:center;justify-content:center;flex:0 0 auto;color:#fff}
+  .chk svg{width:14px;height:14px}
+  .billrow.on .chk{background:var(--g);border-color:var(--g)}
+  .billbar{position:sticky;bottom:0;margin:16px -18px 0;padding:12px 18px calc(12px + env(safe-area-inset-bottom));background:rgba(255,255,255,.97);border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 -6px 18px rgba(30,60,10,.06)}
+  .billbar small{display:block;font-size:12px;color:var(--muted)}
+  .billbar b{font-size:20px;font-weight:700;color:var(--g-dd)}
+  .billbar .btn{min-width:132px}
+  .billbar .btn[disabled]{background:#d5dccf;color:#fff}
+  .coupon.mine{margin:0 0 10px}
+  .coupon.mine small+small{margin-top:0}
+  .coupon.used{opacity:.55}
+  .btn.done-btn{opacity:.6}
+  .empty{text-align:center;padding:28px 18px!important;display:flex;flex-direction:column;align-items:center;gap:6px}
+  .empty>svg{width:34px;height:34px;color:var(--g-d)}
+  .empty b{font-size:15px;font-weight:600}
+  .empty small{font-size:12.5px;color:var(--muted);line-height:1.5;margin-bottom:8px}
+  .cpnuse{text-align:center;padding:18px!important}
+  .cpnuse .hero{width:84px;height:84px;border-radius:22px;margin:0 auto 10px;background:var(--g-s);color:var(--g-d);display:flex;align-items:center;justify-content:center}
+  .cpnuse>b{display:block;font-size:17px;font-weight:600}
+  .cpnuse>small{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+  .cpnuse .tear{border-top:2px dashed var(--line);margin:16px -18px 4px}
+  .cpnuse .code{font-size:18px;font-weight:700;letter-spacing:2px;color:var(--g-dd);margin-bottom:6px}
+  .aunjai{position:absolute;right:14px;bottom:calc(98px + env(safe-area-inset-bottom));z-index:45;display:flex;align-items:center;gap:0;cursor:pointer;filter:drop-shadow(0 6px 14px rgba(40,80,10,.25))}
+  .aunjai .face{width:58px;height:58px;border-radius:50%;background:#fff;border:2.5px solid var(--g);overflow:hidden;display:block;position:relative;z-index:1}
+  .aunjai .face img{width:100%;height:100%;object-fit:cover;object-position:50% 45%} /* v36: tighter head crop, whole face visible */
+  .aunjai .say{background:#fff;color:var(--g-dd);font-size:12.5px;font-weight:600;padding:6px 16px 6px 12px;margin-right:-10px;border-radius:14px 0 0 14px;border:1.5px solid var(--g-s2);border-right:0;white-space:nowrap}
+  .aunjai:active{transform:scale(.96)}
+  .phone:has(#page-sub.active[data-cur="chat"]) .aunjai,.phone:has(#page-scan.active) .aunjai{display:none}
+  .chat{display:flex;flex-direction:column;gap:10px;padding-bottom:8px}
+  .chat .m{display:flex;gap:8px;align-items:flex-end;max-width:88%}
+  .chat .m .av{width:34px;height:34px;border-radius:50%;overflow:hidden;border:1.5px solid var(--g);background:#fff;flex:0 0 auto}
+  .chat .m .av img{width:100%;height:100%;object-fit:cover;object-position:50% 45%}
+  .chat .m .b{background:#fff;border:1px solid var(--line);border-radius:16px 16px 16px 4px;padding:10px 12px;font-size:14px;line-height:1.5}
+  .chat .m.you{align-self:flex-end}
+  .chat .m.you .b{background:var(--g);color:#fff;border:0;border-radius:16px 16px 4px 16px}
+  .chat .m .b .btn{height:32px;font-size:12.5px;margin-top:8px;padding:0 12px}
+  .chat .ajhello{text-align:center;padding:4px 0 6px}
+  .chat .ajhello img{width:120px;height:auto;border-radius:20px}
+  .chat .ajhello b{display:block;font-size:16px;font-weight:600;margin-top:4px}
+  .chat .ajhello small{font-size:12px;color:var(--muted)}
+  .qr-chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 0 42px}
+  .qr-chips span{font-size:12.5px;background:#fff;border:1.5px solid var(--g-s2);color:var(--g-dd);border-radius:14px;padding:5px 11px;cursor:pointer}
+  .chatbar{position:sticky;bottom:0;margin:10px -18px 0;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:var(--bg);display:flex;gap:8px;border-top:1px solid var(--line)}
+  .chatbar input{flex:1;height:42px;border-radius:21px;border:1px solid var(--line);padding:0 16px;font-size:14px;background:#fff}
+  .chatbar .send{width:42px;height:42px;border-radius:50%;background:var(--g);color:#fff;display:flex;align-items:center;justify-content:center}
+  #page-sub:has(.chatbar){padding-bottom:0}
+  #page-sub:has(.chatbar) .sub-body{min-height:calc(100% - 56px);display:flex;flex-direction:column;padding-bottom:0}
+  #page-sub:has(.chatbar) .chatbar{margin-top:auto}
+  .paysec{font-size:16px;font-weight:600;margin:20px 2px 10px}
+  .billbar .btn{min-width:150px}
+  /* v31: step 1 is short now, so pin the total bar to the bottom of the screen */
+  #page-sub:has(.billbar){padding-bottom:0}
+  #page-sub:has(.billbar) .sub-body{min-height:calc(100% - 56px);display:flex;flex-direction:column;padding-bottom:0}
+  #page-sub:has(.billbar) .billbar{margin-top:auto}
+  .paysum{padding:14px;text-align:center}
+  .paysum small{display:block;font-size:12px;color:var(--muted)}
+  .paysum b{display:block;font-size:24px;font-weight:700;color:var(--g-dd);margin:2px 0 8px}
+  .paysum .nums{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+  .paysum .nums span{font-size:12px;background:var(--g-s);color:var(--g-dd);border-radius:9px;padding:2px 9px}
+  .li .ico.line{background:#e3f8e9;color:#06c755}
+  .banks{padding:6px 14px}
+  .bk{display:grid;grid-template-columns:40px 1fr;grid-template-rows:auto auto;column-gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line2);cursor:pointer}
+  .bk:last-child{border-bottom:0}
+  .bk .dot{grid-row:1/3;width:40px;height:40px;border-radius:12px;color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .bk b{font-size:14.5px;font-weight:600}
+  .bk small{font-size:12px;color:var(--muted)}
+  .cardform{padding:14px;display:flex;flex-direction:column;gap:12px}
+  .cardform label{display:flex;flex-direction:column;gap:5px;font-size:12.5px;color:var(--muted)}
+  .cardform input{height:44px;border:1px solid var(--line);border-radius:12px;padding:0 12px;font-size:15px;background:#fbfcfa;color:var(--text)}
+  .cardform .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .cardform .save{display:flex;align-items:center;gap:8px;font-size:13px}
+  .chk.on-chk{background:var(--g);border-color:var(--g)}
+  .qrbox{padding:18px;text-align:center}
+  .qrbox .pp{display:inline-block;font-weight:700;color:#fff;background:#113566;border-radius:8px;padding:3px 12px;font-size:13px}
+  .qrimg{width:190px;height:190px;margin:14px auto 10px;display:block;fill:#1b2616}
+  .two-btn{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+  .linebox{padding:18px;text-align:center}
+  .linebox .lp{display:inline-block;font-weight:700;color:#fff;background:#06c755;border-radius:10px;padding:4px 14px;font-size:15px;margin-bottom:10px}
+  .linebox b{display:block;font-size:15px;font-weight:600}
+  .linebox small{display:block;font-size:12.5px;color:var(--muted);margin-top:4px;line-height:1.5}
+  .lpbtn{background:#06c755;color:#fff}
+  .done{padding:22px 16px;text-align:center}
+  .done .ok{width:60px;height:60px;border-radius:50%;background:var(--g);color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+  .done .ok svg{width:32px;height:32px}
+  .done>b{display:block;font-size:18px;font-weight:600}
+  .done .big{font-size:28px;font-weight:700;color:var(--g-dd);margin:4px 0}
+  .done small{font-size:12.5px;color:var(--muted)}
   .shopcard{margin:10px 18px 0;padding:12px;display:flex;align-items:center;gap:12px}
   .shopcard .ico{width:48px;height:48px;border-radius:15px}
   .shopcard .tx{flex:1;min-width:0}
@@ -470,6 +582,8 @@
 </head>
 <body>
 <div class="phone" id="phone">
+  <!-- v35/v36: floating chatbot button (icon only), always bottom-right -->
+  <div class="aunjai" data-go="sub:chat" title="คุยกับอุ่นใจ"><span class="face"><img src="data:image/webp;base64,UklGRn4MAABXRUJQVlA4IHIMAACwOwCdASqgAKAAPlEijkSjoiEVST4UOAUEoA0x0Fz++3clPyZ4S6Ok0PXf/H/sfUn+533BP0W/yv9g62HmH/Xf9oveu/sH6ze6b+9eoB/gv9P1hHoAeWj7Gf7hfs97RP/wu2PTTCb2ofZB9zxY/H9UTTh9GWcArIeQegX0V9AP1r7BX699bf0ekRTKg0KZSDGtjyyv2WfkbIuol8lkQMWfn/TgBZadEraxa7Z1qy9y6m21MT8gtFB/A645IBfvzYR/lzyAYR4MDD6OYx0dYVUdmoZEfundmSef4P/qpM08b0UrkpAUbhDnqmY43pPnTnPK6aBkcrbXCakjQ4uCQa7Q0gdX6juM/SfDBP3AVt0gIebSzC43wPntTbnxwtUypc8uOgMpQayNRuaWEzyZxohtlx+E5xvlwhgwHabHMB2QZdrAmIeFX+Pz06I1M9zWRm0BJlTW0VLkNxTS3Khl4EXVjkXjEzzemmP/zbHSMocPu7PYOwQnHaIffiO7m9KnBELZLEhzbZdPzmQrt/TnEj9xuJ9BPADN9mHlqd9M9iHRTfx+2bbhGC+hqwlG7Z5pJPWUV6K43Ihmvrm0xmAxPHg14AOPSqh0qRPCi5w5/e+Y/f+0HV3nksRmsplFx6HL3mr4GBVFNnAA/v3AgP/Ca5p7mFNUkGL3tZtwoOOi8zeFUDkuQpVD67X8UsGTEDsLQHa45XfGXINoOU/joAA817njjDZBg7Wkjl1uyvfq67+qLk2hhVTAaGe0h7A5ymX7RYp2bETN9UV+2BoVHlft3jFwyp37uxflp5cj+3ji+UxMEkFO+fI3pG66xU7ffNCmRxRjMzm4BB+hhy0AWIxwW70MCFXhwtC8TuuABbhUpU2PSGIPDp7/dikfe7PEJP1JGd4NGRtGHNHSMdEZhWU+ODr1KmxP48ksBbVtupPIsd5QbFJJ4zwM3R4cxD7uq7Q6TJE/6MLrAQSIK3ZXKgtNlq7Vx8yCSLjHBUHHbKt40XHTNeHYbuQ22r2uQczWZanPb80CtFQNQ6S3SrD6UAA2elg9UfuptMtcN0+5+6qBV+ha000wbDgws6V4Dh45Uc02Ey6fIRMykLjRYBVDOM25yqBJc2d4wBjkxass5ChN57h6BZRRq2FgHtC1GWGNOg/r7QocPYP8E7DwE0uXbc6kyppjGYYZ32uhKG9kOjMzEMmIoEsRFm53rGIgHfT4mxxSkib29dU2Y/Ar+TbbT+nV152dbp3//4sMZvM+fyvxMKvP+OyHgfX/nL2igh2mEu+iH7y6YCXIW/BCzuUJB5As11vXz3sMvjsDhPa5Hf7sr5J+VPd3lGYp9wzIFQ76WyD4Plocua+DZ0x0NYMHbHaH6xQNhqU0I732WYgveCXTR/cipHBcOvxyPcK2FWdM8fDXK3ev9/T3UD0bk9btkFRXWpjNdyrEBZwuUqIqfs1sl/paemC4BnxJ/BvVHsU/6j/vvZCrtnmRz+bVAspS6B9dsnf487eUkvkBFQ2jEAIEUu1FrQgVcJsBlqtFO13L3Dda9RNms46e0Ip6Bx/suNfV28dr1g8WlncZJzUNHscT7Ocg3FLe0B2kHckjrf9f4QOKrf635vc0Q7wPyOHemYe9+jqD87nEHRBMMu//oV4s/8goW1+L9IX0TrE7T56HlFABOQ8t//VI/dl8xu6/jLk87p7+GYRYHX4iKF2rzwb/3PCtI1pWBYrZZRTJ8249WjBbTQQha5q8FG/9zr9nPtLXqfpGPcWbkBpy3PpJz24Xbto4Q5Mywa/HIIdMRVnxHeGO3ZvZGkUbObgzVTq5WXbJs0eziASNL3iJERdKZuhNjAbAi+ydK2CCldQm+JoIfDuQ7rQoE1r7yaXxDLqJRUw1qNKhYhXjW8UM7RU/8AJwFDvwBD4432R6EwQHNYDAYB7TI6E97XMZ3D71iByuTb9gh/UMZtYsYU3qKPkUDsgbv/f6e/9C3U7z+D8ydiWjmUgi+Zgk2e53tzKqIY0RthU/4gLPoATJV9pBjWsBw7EVfM+POBEsm6MvAzPud3MRJXDSiGaEBa5TIGXhcc8LRgjAK8l+z8eXE5RIvYJ3nA3XaQwEqaJvqVH7UBVxBSFINkg0WRXTH6hrnRNokt1mdLZTo0SHJlNW9zmKR91rdDrBDU+9XcZe0RoOO3GfwRypjJo6/DlEM8NWe6b3Co32tV+XzDoMP02meNuFqyFEJKoopj6uOiq+oN7JUnyJUgFrY7bg0OVj+sF/P4Y8q/zEI6rq3RObk9QwJyTR06dX768vqk1L0ZkP6x5pKLQCMf3AO2ffrmF+Lrwqm9OwMj62z+jP1UALjc1b0XNlGlLA9H5dUbm1cXhaoceTfz9QWu7mk1drmwylIbnG+/l6jCCVTaXtnJR9kf0dTBXSCC25AE07ZDIA9NY29dKW3Ojb1mmkZReJJ5x0iLD/nmbxZcAZE7E+f86R7z3vcIYKvB+WITMEbOQGvWB0OVuSbfSgSVG56LEwKrOX40uebBUubAbYqaDqZYFkPEAYiX1kiKzQtwcdac9T4GlNS4cZ8gvoMBpkEQ4Ble5Cn+EbiEde4zqHfyscJ6Zf6o3wkigbIR1IYuWdyddPCq8hFs0NJBRHWUV4avKlalg+0TZJz0mKkPwV+NdfB0RmfizaaedlIqneWoItC4C1ZP5IN8cWwvSJOoWx4EUlqUUuOeD1mRWXGyCsKbIaSqgUROPip+mDNcE/Ht+qIAi25kPT0I6EXmFEljEUdRL0IHBCP2qw690igFNOYs25vnnSXU/JS8Jm7sSFgdY0TGhLA4jEwGaU5Sx94UHPEOeAHEIztoHTg4+u282UMtkNPVXBYfyCf70fwCw78oPi3SonMYHTcxIiAAvm/UBftDc57PZYRi2iGtHzoO5ZAuXE5OxZX9/K3MSbDnJEYxVgzCaauj5+wynEKnJRFVFEq78QNx+WDAiACGyhVlAGOhm6bdIMzDD4tkGF/r3iWU5rXtP7U07ppprKGAlZkG6lo+cbpcQaGA+2niml/KIoNq0mimYSdsj3CMWS1jwizpDE7HiGKmSMW2OUrODUWkJz/VjlhNLdspX9ulmYCsRGyRlYurETVsnz6+meXcC64jJPogsEVThWyLEDth/xwb5Xef8Hf0rZV1hczNMroJbnbv0ol/f3ZEwjRRa7oK6hSMwLIZ1MK77nEZfOZt3DQjhGA09FsfzbN0qhymXQr6CR6zRuVkj69gBE3evDFFfVheL1vcQFYYhF0txDqSYDTCMVj5N5gKR9sAoGAsmfM7SV8hpcMtsj1ImdLhHDMmVpnSR2R8yZpKK1yyzqp0D4yH9OaPpSB5gXW3lBA+WJRXGWbjkc36tMgyjGr0CIqPUubFa7VmNVKVDGnla/L47urNio28gVaBxbVw7OrNKYBiWnjIYDBpZZdjxuDC+2M0piNYm/GovW6VuLx70hfnHmTdsYIfM75bsX6LZw2CRYDdIwL6vXSXlkWJoW6PvLR20m70xdoj3gP6pdUrOiSaVmonzOI0dhUHcbxabl00HjEQDjMlnrE6PLLvux50/X+WdQoJ4I9kwLkcQa3Zwebnijlotgu8gT4xUwJvU0oDdFtyhjxAwLz/rrYo9jcG9R+7tlrzuK/wCHg7Gh2AlwQNjWbuZa5yZaKhwLs8YHQbLxglRXObaZ/jNwBiVLD/HkBYq1a3QsuCLhuiNl9pMMcflAzR0JxPbOAArei+YI24IPa586OgIYLBY13OkTCzm52iuwjgfgOiKOTrs2slTvmMCr83i00iramjIavpZG5bmDoEmkSOyBGmuRukhvHj+FPmk7FUwWAeV9IW0frxHM7C12c3hxbjevttDjZY5WEL53dX8O2g6eE0T4CU8R9ezTb7SAgNI25k/itL3iNa0MBTZfmpVAIGLEmRbH+REL0pA7zz9XAFpp0EQG0JCU67JdFGWYhOS+KaqPaMfCXPgYR0rEKLXL9q+2eIADu82LVLqykEekcCANkzfp9ARfNkfbaKYUHKwXJaH+pWl5r8zyJxlLEIVFIFAe+wsrpMSua0TfOOweXZ5UoG/QQ6DgJmQnWO2v7oH51LYyM1OAV5Fkj7boOQa9WqrqWNiP+e8yc34Ji9r/s349zOvCdm+b5vLJMjeGDNuLeFWY+xGV++EtgeTiORvU/djQMc5Vy043PUgAggZu4sG6x1EPV1gdv6LaMcCAeDyhdNaHqfj577yw/1NQJHfbNkwc3wuhVMsSbNghX4FK/v7hcyXAAAA=" alt="น้องอุ่นใจ"></span></div>
   <div class="statusbar"><span>09:41</span><div class="island"></div>
     <div class="icons">
       <svg width="18" height="12" viewBox="0 0 18 12" fill="#1b2616"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2.5" width="3" height="9.5" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
@@ -484,6 +598,7 @@
     <div class="topbar">
       <div class="hello" data-go="page:profile"><div class="avatar">ธ</div><div><small>สวัสดีตอนเช้า</small><b>คุณธนากร</b></div></div>
       <div class="row" style="gap:8px">
+        <div class="icon-btn js-privbtn" data-go="fn:hide" title="โหมดส่วนตัว"><i data-i="eye"></i></div>
         <div class="icon-btn" data-go="sub:search"><i data-i="search"></i></div>
         <div class="icon-btn" data-go="sub:notifications"><i data-i="bell"></i><span class="dot-badge"></span></div>
       </div>
@@ -492,9 +607,19 @@
     <div class="ov-head">
       <div><h3>เบอร์ของฉัน <span class="muted" style="font-weight:400;font-size:14px" id="numCount"></span></h3>
         <div class="sub" data-go="toast:อัปเดตข้อมูลล่าสุดแล้ว"><i data-i="refresh"></i>อัปเดตล่าสุด 09:40</div></div>
-      <div class="eye" data-go="fn:hide" title="ซ่อนยอดเงิน"><i data-i="eye"></i></div>
     </div>
     <div class="ncards5" id="dashRows"></div>
+
+    <!-- v25: gentle reminder, own section; just enough to notice, no pressure -->
+    <div class="sec"><h3>คะแนนใกล้หมดอายุ</h3></div>
+    <div class="card ptsalert" data-go="fn:pushgo:exp">
+      <div class="top">
+        <div class="ico t-sun"><i data-i="coin"></i></div>
+        <div class="tx"><b>80 คะแนน</b><small>หมดอายุ 31 ต.ค. 69</small></div>
+        <div class="num"><b>081-472-6614</b><small>เบอร์ลูก</small></div>
+      </div>
+      <div class="foot"><span>แลกอเมริกาโน่เย็นได้ 1 แก้ว</span><span class="go">ดูของแลก ›</span></div>
+    </div>
 
     <div class="sec"><h3>ทำรายการ</h3></div>
     <div class="card qa-grid">
@@ -519,6 +644,24 @@
       <div class="card reco" data-go="sub:pkg" data-title="Sim2Fly เอเชีย 15GB"><div class="ico t-peach"><i data-i="plane"></i></div>
         <div><div class="t">Sim2Fly เอเชีย 15GB</div><div class="d">เน็ตโรมมิ่ง 15 วัน 15 ประเทศ</div></div>
         <div class="foot"><div class="price">399 ฿ <small>/15 วัน</small></div><span class="chip">เดินทาง</span></div></div>
+      <div class="card reco" data-go="sub:pkg" data-title="เน็ตไม่อั้น 1 วัน"><div class="ico t-mint"><i data-i="wifi"></i></div>
+        <div><div class="t">เน็ตไม่อั้น 1 วัน</div><div class="d">ความเร็ว 4Mbps ไม่ลดสปีด</div></div>
+        <div class="foot"><div class="price">19 ฿ <small>/วัน</small></div><span class="chip">รายวัน</span></div></div>
+      <div class="card reco" data-go="sub:pkg" data-title="Netflix Mobile"><div class="ico t-rose"><i data-i="play"></i></div>
+        <div><div class="t">Netflix Mobile</div><div class="d">ดูบนมือถือ 1 จอ ชำระผ่านบิล AIS</div></div>
+        <div class="foot"><div class="price">99 ฿ <small>/เดือน</small></div><span class="chip">บันเทิง</span></div></div>
+      <div class="card reco" data-go="sub:pkg" data-title="AIS PLAY Premium"><div class="ico t-lav"><i data-i="play"></i></div>
+        <div><div class="t">AIS PLAY Premium</div><div class="d">ซีรีส์ หนัง กีฬา ดูได้ทุกจอ</div></div>
+        <div class="foot"><div class="price">119 ฿ <small>/เดือน</small></div><span class="chip">บันเทิง</span></div></div>
+      <div class="card reco" data-go="sub:pkg" data-title="AIS Fibre 1Gbps"><div class="ico t-mint"><i data-i="router"></i></div>
+        <div><div class="t">AIS Fibre 1Gbps</div><div class="d">เน็ตบ้าน + ฟรีกล่อง AIS PLAYBOX</div></div>
+        <div class="foot"><div class="price">599 ฿ <small>/เดือน</small></div><span class="chip">เน็ตบ้าน</span></div></div>
+      <div class="card reco" data-go="sub:pkg" data-title="โทรไม่อั้นทุกเครือข่าย"><div class="ico t-sun"><i data-i="call"></i></div>
+        <div><div class="t">โทรไม่อั้นทุกเครือข่าย</div><div class="d">โทรได้ 24 ชม. นาน 30 วัน</div></div>
+        <div class="foot"><div class="price">150 ฿ <small>/30 วัน</small></div><span class="chip">โทร</span></div></div>
+      <div class="card reco" data-go="sub:pkg" data-title="ประกันมือถือ AIS Care+"><div class="ico"><i data-i="shield"></i></div>
+        <div><div class="t">ประกันมือถือ AIS Care+</div><div class="d">จอแตก ตกน้ำ ซ่อมฟรีที่ AIS Shop</div></div>
+        <div class="foot"><div class="price">59 ฿ <small>/เดือน</small></div><span class="chip">ความคุ้มครอง</span></div></div>
     </div>
   </section>
 
@@ -614,10 +757,10 @@
       <div class="promo c-lav" data-go="sub:lucky"><div class="txt"><div class="k">ถึง 31 ธ.ค. 69</div><div class="t">ลุ้นโชคส่งท้ายปี<br>รวม 3 ล้านบาท</div><div class="d">ใช้ 10 คะแนน / สิทธิ์</div></div><div class="art" data-art="gift:lav"></div></div>
     </div>
 
-    <div class="sec"><h3>คูปองวันนี้</h3><span class="link" data-go="sub:redeemlist">ดูทั้งหมด</span></div>
-    <div class="card coupon" data-go="sub:coupon" data-title="เฟรนช์ฟรายส์ (M) ฟรี"><div data-ph="fries" class="lg t-sun"><i data-i="food"></i></div><div class="tx"><b>เฟรนช์ฟรายส์ (M) ฟรี</b><small>ร้านฟาสต์ฟู้ดที่ร่วมรายการ</small><span class="chip" style="margin-top:6px">99 คะแนน</span></div><button class="btn soft" data-go="toast:เก็บคูปองเรียบร้อยแล้ว">เก็บ</button></div>
-    <div class="card coupon" data-go="sub:coupon" data-title="ไอศกรีม ลด 50 บาท"><div data-ph="icecream" class="lg t-rose"><i data-i="food"></i></div><div class="tx"><b>ไอศกรีม ลด 50 บาท</b><small>ขั้นต่ำ 300 บาท</small><span class="chip" style="margin-top:6px">100 คะแนน</span></div><button class="btn soft" data-go="toast:เก็บคูปองเรียบร้อยแล้ว">เก็บ</button></div>
-    <div class="card coupon" data-go="sub:coupon" data-title="ตั๋วหนังลด 40 บาท"><div data-ph="popcorn" class="lg t-lav"><i data-i="play"></i></div><div class="tx"><b>ตั๋วหนังลด 40 บาท</b><small>ทุกวันพุธ ทุกสาขา</small><span class="chip" style="margin-top:6px">80 คะแนน</span></div><button class="btn soft" data-go="toast:เก็บคูปองเรียบร้อยแล้ว">เก็บ</button></div>
+    <div class="sec"><h3>คูปองวันนี้</h3><span class="link" data-go="sub:mycoupon">คูปองของฉัน <span class="js-cpncount"></span></span></div>
+    <div class="card coupon" data-go="sub:coupon" data-title="เฟรนช์ฟรายส์ (M) ฟรี"><div data-ph="fries" class="lg t-sun"><i data-i="food"></i></div><div class="tx"><b>เฟรนช์ฟรายส์ (M) ฟรี</b><small>ร้านฟาสต์ฟู้ดที่ร่วมรายการ</small><span class="chip" style="margin-top:6px">99 คะแนน</span></div><button class="btn soft js-cbtn" data-c="fries" data-go="fn:collect:fries">เก็บ</button></div>
+    <div class="card coupon" data-go="sub:coupon" data-title="ไอศกรีม ลด 50 บาท"><div data-ph="icecream" class="lg t-rose"><i data-i="food"></i></div><div class="tx"><b>ไอศกรีม ลด 50 บาท</b><small>ขั้นต่ำ 300 บาท</small><span class="chip" style="margin-top:6px">100 คะแนน</span></div><button class="btn soft js-cbtn" data-c="icecream" data-go="fn:collect:icecream">เก็บ</button></div>
+    <div class="card coupon" data-go="sub:coupon" data-title="ตั๋วหนังลด 40 บาท"><div data-ph="popcorn" class="lg t-lav"><i data-i="play"></i></div><div class="tx"><b>ตั๋วหนังลด 40 บาท</b><small>ทุกวันพุธ ทุกสาขา</small><span class="chip" style="margin-top:6px">80 คะแนน</span></div><button class="btn soft js-cbtn" data-c="popcorn" data-go="fn:collect:popcorn">เก็บ</button></div>
 
     <div class="sec"><h3>แลกได้ด้วย 1 คะแนน</h3></div>
     <div class="rgrid" style="padding-bottom:14px">
@@ -818,17 +961,90 @@ const NUMBERS = [
   {num:'081-472-5390', kind:'mobile', type:'รายเดือน', nick:'เบอร์หลัก', plan:'5G Smart 599',
    money:{label:'ยอดที่ต้องชำระ', v:'345.50', note:'ครบกำหนด 31 ต.ค. 69'},
    data:{left:21.7, total:35, unit:'GB'}, call:{left:360,total:450},
-   exp:{label:'รอบบิลถัดไป', days:4, date:'1 พ.ย. 69'}, pts:250, ptsExp:'12 คะแนน หมดอายุ 30 มิ.ย. 70', cta:['จ่ายบิล','sub:paybill']},
+   exp:{label:'ชำระภายใน', days:4, date:'1 พ.ย. 69'}, pts:250, ptsExp:'12 คะแนน หมดอายุ 30 มิ.ย. 70', cta:['จ่ายบิล','sub:paybill']},
   {num:'081-472-6614', kind:'mobile', type:'เติมเงิน', nick:'เบอร์ลูก', plan:'เน็ตรายเดือน 10GB',
    money:{label:'ยอดเงินคงเหลือ', v:'86.25', note:'ใช้ได้ถึง 12 ม.ค. 70'},
    data:{left:1.2, total:10, unit:'GB'}, call:{left:42,total:100},
-   exp:{label:'แพ็กเกจหมดอายุ', days:2, date:'30 ต.ค. 69', time:'14:35'}, pts:1120, ptsExp:'80 คะแนน หมดอายุ 31 ธ.ค. 69', hint:'ต่อแพ็กเน็ตวันนี้ รับเพิ่ม 2 Points', cta:['เติมเงิน','sub:topup']},
+   exp:{label:'แพ็กเกจหมดอายุ', days:2, date:'30 ต.ค. 69', time:'14:35'}, pts:1120, ptsExp:'80 คะแนน หมดอายุ 31 ต.ค. 69', hint:'ต่อแพ็กเน็ตวันนี้ รับเพิ่ม 2 Points', cta:['เติมเงิน','sub:topup']},
   {num:'880-312-4478', kind:'fibre', type:'AIS Fibre', nick:'เน็ตบ้าน', plan:'Fibre 1Gbps',
    money:{label:'ยอดค้างชำระ', v:'799.00', note:'เกินกำหนด 25 ต.ค. 69', over:true}, hint:'ชำระวันนี้ รับเพิ่ม 5 Points',
    data:{unlimited:true, label:'ไม่จำกัด', sub:'1Gbps / 500Mbps'}, call:null,
-   exp:{label:'รอบบิลถัดไป', days:8, date:'5 พ.ย. 69'}, pts:520, ptsExp:'20 คะแนน หมดอายุ 31 มี.ค. 70', cta:['จ่ายบิล','sub:paybill']}
+   exp:{label:'ชำระภายใน', days:8, date:'5 พ.ย. 69'}, pts:520, ptsExp:'20 คะแนน หมดอายุ 31 มี.ค. 70', cta:['จ่ายบิล','sub:paybill']}
 ];
 let current = 0, hideAmt = false;
+/* v29: numbers that get a bill (postpaid + fibre) and which ones are ticked on the pay page */
+const billable = () => NUMBERS.map((n,i)=>i).filter(i=>NUMBERS[i].cta[1]==='sub:paybill');
+let billSel = new Set();
+const money = v => v.toLocaleString('en-US',{minimumFractionDigits:2, maximumFractionDigits:2});
+/* v30: simulated payment step per method, then a receipt */
+const PAYM = {
+  bank:{name:'Mobile Banking', sub:'ไม่มีค่าธรรมเนียม', icon:'bank'},
+  card:{name:'บัตรเครดิต / เดบิต', sub:'Visa · Mastercard · JCB', icon:'wallet'},
+  qr:{name:'พร้อมเพย์ QR', sub:'สแกนจ่ายได้ทุกแอปธนาคาร', icon:'qr'},
+  line:{name:'Rabbit LINE Pay', sub:'พาร์ทเนอร์ AIS', icon:'chat'}};
+const payMethods = n => '<div class="card list">'+Object.entries(PAYM).map(([k,m])=>
+  `<div class="li" data-go="${n?'sub:paym':'toast:กรุณาเลือกอย่างน้อย 1 เบอร์'}" data-title="${k}"><div class="ico ${k==='line'?'line':''}">${ic(m.icon)}</div><div class="tx"><b>${m.name}</b><small>${m.sub}</small></div>${ic('chev','chev')}</div>`).join('')+'</div>';
+const payTotal = () => [...billSel].reduce((a,i)=>a+parseFloat(NUMBERS[i].money.v),0);
+const paySummary = () => `<div class="card paysum"><small>ยอดชำระ ${billSel.size} เบอร์</small><b class="amt">${money(payTotal())} บาท</b>
+  <div class="nums">${[...billSel].map(i=>`<span>${NUMBERS[i].num}</span>`).join('')}</div></div>`;
+const qrSvg = () => { let r=''; let x=7; for(let i=0;i<21;i++) for(let j=0;j<21;j++){ x=(x*73+41)%997;
+  const fin=(i<7&&j<7)||(i<7&&j>13)||(i>13&&j<7); const ring=fin&&((i%14===0||i%14===6||j%14===0||j%14===6)||(i%14>1&&i%14<5&&j%14>1&&j%14<5));
+  if(fin?ring:x%2) r+=`<rect x="${j}" y="${i}" width="1" height="1"/>`; } return `<svg viewBox="-1 -1 23 23" class="qrimg">${r}</svg>`; };
+let lastPay = null;
+/* v35: น้องอุ่นใจ chatbot (simulated answers + quick replies) */
+const AJ_HEAD = 'data:image/webp;base64,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', AJ_FULL = 'data:image/webp;base64,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';
+const AJ = {
+  bill:['เช็กยอดค้างชำระ', ()=>`ตอนนี้มียอดที่ต้องชำระ 2 เบอร์ค่ะ<br>• 081-472-5390 · 345.50 บาท<br>• 880-312-4478 · 799.00 บาท (เกินกำหนด)<br><button class="btn primary" data-go="sub:paybill">จ่ายบิลรวม</button>`],
+  net:['เน็ตใกล้หมดทำไงดี', ()=>`เบอร์ลูก 081-472-6614 เหลือเน็ต 1.2 GB ค่ะ แนะนำเน็ตเสริม 10GB 7 วัน 99 บาท<br><button class="btn primary" data-go="sub:addon">ดูแพ็กเสริม</button>`],
+  pts:['คะแนนใกล้หมดอายุ', ()=>`เบอร์ลูกมี 80 คะแนนที่จะหมดอายุ 31 ต.ค. 69 ค่ะ แลกอเมริกาโน่เย็นได้ 1 แก้ว<br><button class="btn primary" data-go="fn:pushgo:exp">ดูของแลก</button>`],
+  staff:['ติดต่อเจ้าหน้าที่', ()=>`ได้เลยค่ะ อุ่นใจกำลังโอนสายให้เจ้าหน้าที่ หรือโทร 1175 ได้ตลอด 24 ชม. ค่ะ<br><button class="btn soft" data-go="toast:กำลังโทร 1175 (จำลอง)">โทร 1175</button>`]};
+let ajLog = [];
+const ajBubble = ([who, html]) => who==='me' ? `<div class="m you"><div class="b">${html}</div></div>`
+  : `<div class="m"><span class="av"><img src="${AJ_HEAD}" alt=""></span><div class="b">${html}</div></div>`;
+function ajAsk(k, text){ const a = AJ[k];
+  ajLog.push(['me', a ? a[0] : text]);
+  ajLog.push(['bot', a ? a[1]() : 'อุ่นใจรับเรื่องแล้วค่ะ ลองเลือกหัวข้อด้านล่าง หรือพิมพ์ "เจ้าหน้าที่" เพื่อคุยกับเจ้าหน้าที่ได้เลยค่ะ']);
+  const p=$('page-sub'); renderSub('chat', '__keep'); p.scrollTop = p.scrollHeight; }
+/* v33: today's coupons; cpnState[id] = 'kept' | 'used' */
+const CPN = [
+  {id:'fries', t:'เฟรนช์ฟรายส์ (M) ฟรี', s:'ร้านฟาสต์ฟู้ดที่ร่วมรายการ', exp:'31 ต.ค. 69', ph:'fries', icon:'food', col:'sun', code:'AIS-FRY-4821'},
+  {id:'icecream', t:'ไอศกรีม ลด 50 บาท', s:'ขั้นต่ำ 300 บาท', exp:'15 พ.ย. 69', ph:'icecream', icon:'food', col:'rose', code:'AIS-ICE-7305'},
+  {id:'popcorn', t:'ตั๋วหนังลด 40 บาท', s:'ทุกวันพุธ ทุกสาขา', exp:'30 พ.ย. 69', ph:'popcorn', icon:'play', col:'lav', code:'AIS-MOV-1964'}];
+const cpnState = {};
+function syncCoupons(){
+  document.querySelectorAll('.js-cbtn').forEach(b=>{ const st = cpnState[b.dataset.c];
+    b.textContent = st==='used' ? 'ใช้แล้ว' : st ? 'ใช้' : 'เก็บ';
+    b.className = 'btn js-cbtn ' + (st==='used' ? 'soft done-btn' : st ? 'primary' : 'soft');
+    b.dataset.go = st==='used' ? 'toast:ใช้คูปองนี้แล้ว' : st ? 'sub:cpnuse' : 'fn:collect:'+b.dataset.c;
+    b.dataset.title = b.dataset.c; });
+  const n = CPN.filter(c=>cpnState[c.id]==='kept').length;
+  document.querySelectorAll('.js-cpncount').forEach(e=>e.textContent = n ? `(${n})` : '');
+}
+setInterval(()=>{ const t=document.getElementById('qrTimer'); if(!t) return; const [m,s2]=t.textContent.split(':').map(Number); const v=Math.max(0,m*60+s2-1);
+  t.textContent=`${String(Math.floor(v/60)).padStart(2,'0')}:${String(v%60).padStart(2,'0')}`; },1000);
+function payDone(method){ lastPay = {method, total:payTotal(), nums:[...billSel].map(i=>NUMBERS[i].num), ref:'AIS'+String(Date.now()).slice(-8)};
+  openSub('paydone'); stack = []; }
+function rerenderSub(){ const p=$('page-sub'), y=p.scrollTop; renderSub(p.dataset.cur, '__keep'); p.scrollTop=y; }
+/* v28: privacy mode = hide every money amount and partly mask name / phone numbers with x.
+   Works on the rendered text, so every page (cards, sub-pages, sheets, toasts) is covered; originals are kept to restore. */
+let privacy = false; const pvOrig = new Map();
+const pvMask = t => t
+  .replace(/\b(0\d{2}|\d{3})-(\d{3})-(\d{4})\b/g, (m,a,b,c)=>`${a}-xxx-${c}`)
+  .replace(/\d[\d,]*\.\d{2}(?=\s*บาท)/g, 'x,xxx.xx')
+  .replace(/ธนากร/g, 'ธxxxx');
+function pvApply(root){
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT); let n;
+  while ((n = w.nextNode())){ const o = pvOrig.has(n) ? pvOrig.get(n) : n.nodeValue, m = pvMask(o);
+    if (m !== o){ pvOrig.set(n, o); if (n.nodeValue !== m) n.nodeValue = m; } } }
+function setPrivacy(on){
+  privacy = on; document.getElementById('phone').classList.toggle('privacy', on);
+  if (on) pvApply(document.getElementById('phone'));
+  else { pvOrig.forEach((o,n)=>{ if (n.isConnected) n.nodeValue = o; }); pvOrig.clear(); }
+  document.querySelectorAll('.js-privbtn').forEach(b=>{ b.innerHTML = ic(on?'eyeoff':'eye'); b.classList.toggle('on', on); });
+  try { localStorage.setItem('myais-privacy', on?'1':'0'); } catch(e){}
+}
+new MutationObserver(ms=>{ if (!privacy) return; ms.forEach(m=>m.addedNodes.forEach(a=>{ if (a.nodeType===1) pvApply(a); else if (a.nodeType===3) pvApply(a.parentNode); })); })
+  .observe(document.getElementById('phone'), {childList:true, subtree:true});
 const N = () => NUMBERS[current];
 const brand = n => `<div class="brand ${n.kind}">${n.kind==='fibre'?'FIBRE':'AIS'}</div>`;
 const fmt = n => n.toLocaleString('en-US');
@@ -849,9 +1065,9 @@ function renderHome(){
     const pct = n.data.unlimited ? 100 : Math.round(n.data.left/n.data.total*100);
     const cls = i===0 ? 'main' : st==='ok' ? '' : st;
     return `<div class="nc5 ${cls}" data-n="${i}">
-      <div class="tags"><span class="tag ${n.kind==='fibre'?'fibre':''}">${n.kind==='fibre'?'AIS FIBRE':n.nick}</span><span class="tag ${st}">${stLabel}</span>${n.type==='เติมเงิน'?'<span class="tag">เติมเงิน</span>':''}</div>
+      <div class="tags"><span class="tag ${n.kind==='fibre'?'fibre':''}">${n.kind==='fibre'?'AIS FIBRE':n.nick}</span><span class="tag ${st}">${stLabel}</span></div>
       <div class="mid"><div class="num" data-go="sub:numdetail">${n.num}</div>
-        <div class="acts"><button class="b-pay" data-go="${n.cta[1]}">${n.cta[1]==='sub:topup'?'เติมเงิน':'จ่ายเงิน'}</button><button class="b-pack" data-go="${n.kind==='fibre'?'sub:fibre':'sub:addon'}">สมัครแพ็ก</button></div></div>
+        <div class="acts"><button class="b-pay" data-go="${n.cta[1]}" data-title="only:${i}">${n.cta[1]==='sub:topup'?'เติมเงิน':'จ่ายเงิน'}</button><button class="b-pack" data-go="${n.kind==='fibre'?'sub:fibre':'sub:addon'}">สมัครแพ็ก</button></div></div>
       ${n.hint?`<div class="hint">${n.hint}</div>`:''}
       <div class="panel" data-go="sub:numdetail">
         <div class="pr"><span>${n.money.label}</span><b class="amt ${n.money.over?'over':''}">${n.money.v} บาท</b></div>
@@ -937,7 +1153,7 @@ const PUSHES = [
   {id:'near', icon:'pin', col:'sky', when:'5 นาทีที่แล้ว', title:'มีร้านแลกพอยท์ใกล้คุณ',
    body:'คาเฟ่ใบเตย ห่าง 300 ม. · ใช้ 60 พอยท์ แลกรับอเมริกาโน่เย็น 1 แก้ว แตะเพื่อดูบนแผนที่', go:()=>{ setTab('priv'); nearCat='all'; nearSel=1; renderNear(); run('fn:map'); }},
   {id:'exp', icon:'coin', col:'sun', when:'วันนี้ 08:00', title:'AIS Points ใกล้หมดอายุ',
-   body:'80 คะแนนของเบอร์ลูก 081-472-6614 จะหมดอายุ 31 ธ.ค. 69 แตะเพื่อแลกก่อนหมด', go:()=>{ pickNumber(1,true); setTab('priv'); }}
+   body:'80 คะแนนของเบอร์ลูก 081-472-6614 จะหมดอายุ 31 ต.ค. 69 หากสนใจ แลกอเมริกาโน่เย็น (60) หรือตั๋วหนังลด 40 บาท (80) ได้', go:()=>{ pickNumber(1,true); setTab('priv'); }}
 ];
 /* ---------- Small HTML helpers for sub-pages ---------- */
 const kv = rows => '<div class="card">'+rows.map(([k,v])=>`<div class="kv"><span>${k}</span><span>${v}</span></div>`).join('')+'</div>';
@@ -963,8 +1179,55 @@ const SUB = {
   ].map(([i,t,d])=>`<div class="notif"><div class="ico">${ic(i)}</div><div>${t}<div class="muted" style="font-size:12px">${d}</div></div></div>`).join('')+'</div>'+
     '<div class="lbl">ตั้งค่าการแจ้งเตือน</div><div class="card list">'+[['coin','AIS Points ใกล้หมดอายุ','แจ้งล่วงหน้า 30 วัน และ 7 วัน'],['pin','ร้านแลกพอยท์ใกล้คุณ','แจ้งเมื่ออยู่ใกล้ร้านพาร์ตเนอร์ไม่เกิน 500 ม.'],['bill','บิลและแพ็กเกจ','ครบกำหนดชำระ แพ็กใกล้หมด']]
       .map(([i,t,d])=>`<div class="li" data-go="fn:switch"><div class="ico">${ic(i)}</div><div class="tx"><b>${t}</b><small>${d}</small></div><span class="switch"></span></div>`).join('')+'</div>'}),
-  paybill:()=>{ const n=N(); return {title:'จ่ายบิล',html:kv([['หมายเลข',n.num],['ยอดที่ต้องชำระ',`<b class="amt">${n.kind==='mobile'&&n.type!=='รายเดือน'?'0.00':n.money.v} บาท</b>`],['ครบกำหนด',n.money.note.replace('ครบกำหนด ','')]])+
-    '<div class="lbl">ช่องทางการชำระ</div>'+items(['Mobile Banking | ไม่มีค่าธรรมเนียม','บัตรเครดิต / เดบิต','พร้อมเพย์ QR','mPAY'],'wallet')+cta('ชำระเงิน','ชำระเงินสำเร็จ (จำลอง)')}; },
+  chat:()=>({title:'คุยกับอุ่นใจ', html:`<div class="chat">
+      <div class="ajhello"><img src="${AJ_FULL}" alt="น้องอุ่นใจ"><b>น้องอุ่นใจ</b><small>ผู้ช่วยของคุณ ตอบได้ทันที 24 ชม.</small></div>
+      ${ajBubble(['bot','สวัสดีค่ะ คุณธนากร อุ่นใจยินดีช่วยเหลือค่ะ วันนี้ให้ช่วยเรื่องอะไรดีคะ'])}
+      ${ajLog.map(ajBubble).join('')}
+      <div class="qr-chips">${Object.entries(AJ).map(([k,[t]])=>`<span data-go="fn:aj:${k}">${t}</span>`).join('')}</div></div>
+      <form class="chatbar" onsubmit="event.preventDefault(); const i=this.querySelector('input'); if(i.value.trim()){ const v=i.value.trim(); ajAsk(/เจ้าหน้าที่/.test(v)?'staff':/บิล|ค้าง|จ่าย/.test(v)?'bill':/เน็ต/.test(v)?'net':/คะแนน|พอยท์|point/i.test(v)?'pts':'', v); }">
+        <input placeholder="พิมพ์ข้อความถึงอุ่นใจ..."><button class="send" type="submit">${ic('chev')}</button></form>`}),
+  /* v31: step 2 = choose how to pay (step 1 = choose numbers) */
+  paysel:()=>({title:'เลือกช่องทางชำระเงิน', html:paySummary()+'<div class="paysec">ชำระด้วย</div>'+payMethods(billSel.size)}),
+  paym:k=>{ const m=PAYM[k]||PAYM.bank; let body='';
+    if (k==='bank') body = '<div class="lbl">เลือกธนาคาร ระบบจะเปิดแอปธนาคารเพื่อยืนยัน</div><div class="card banks">'+
+      [['K PLUS','กสิกรไทย','#138f2d'],['SCB EASY','ไทยพาณิชย์','#4e2a84'],['Krungthai NEXT','กรุงไทย','#1ba5e1'],['Bualuang mBanking','กรุงเทพ','#1e4598'],['KMA','กรุงศรี','#fec43b'],['ttb touch','ทีทีบี','#0050f0']]
+      .map(([a,b,c])=>`<div class="bk" data-go="fn:paydone:bank"><span class="dot" style="background:${c}">${a[0]}</span><b>${a}</b><small>${b}</small></div>`).join('')+'</div>';
+    if (k==='card') body = `<div class="lbl">ข้อมูลบัตร</div><div class="card cardform">
+      <label>หมายเลขบัตร<input inputmode="numeric" placeholder="xxxx xxxx xxxx xxxx"></label>
+      <div class="two"><label>วันหมดอายุ<input placeholder="ดด/ปป"></label><label>CVV<input inputmode="numeric" placeholder="xxx"></label></div>
+      <label>ชื่อบนบัตร<input placeholder="ชื่อ-นามสกุล"></label>
+      <div class="save"><span class="chk on-chk">${ic('check')}</span>บันทึกบัตรไว้ใช้ครั้งหน้า</div></div>
+      <button class="btn primary full" style="margin-top:14px" data-go="fn:paydone:card">ชำระ ${money(payTotal())} บาท</button>
+      <div class="muted" style="font-size:11.5px;text-align:center;margin-top:8px">จำลองเท่านั้น ไม่มีการตัดเงินจริง</div>`;
+    if (k==='qr') body = `<div class="card qrbox"><div class="pp">PromptPay</div>${qrSvg()}
+      <div class="muted" style="font-size:12.5px">สแกนด้วยแอปธนาคารใดก็ได้ · QR หมดอายุใน <b id="qrTimer">15:00</b></div></div>
+      <div class="two-btn"><button class="btn soft" data-go="toast:บันทึก QR ลงอัลบั้มแล้ว (จำลอง)">บันทึก QR</button><button class="btn primary" data-go="fn:paydone:qr">ชำระแล้ว</button></div>`;
+    if (k==='line') body = `<div class="card linebox"><div class="lp">LINE Pay</div><b>ชำระผ่าน Rabbit LINE Pay</b>
+      <small>ระบบจะเปิดแอป LINE เพื่อยืนยันการชำระ รับคะแนน LINE POINTS ตามเงื่อนไข</small></div>
+      <button class="btn full lpbtn" style="margin-top:14px" data-go="fn:paydone:line">เปิด LINE เพื่อชำระ</button>`;
+    return {title:m.name, html:paySummary()+body}; },
+  paydone:()=>{ const p=lastPay||{method:'bank',total:0,nums:[],ref:'-'};
+    return {title:'ชำระเงินสำเร็จ', html:`<div class="card done"><div class="ok">${ic('check')}</div><b>ชำระเงินสำเร็จ</b>
+      <div class="big amt">${money(p.total)} บาท</div><small>ผ่าน ${PAYM[p.method].name}</small></div>`+
+      kv([['หมายเลข', p.nums.join('<br>')],['เลขที่อ้างอิง', p.ref],['วันที่', '28 ต.ค. 69 · 10:42 น.'],['คะแนนที่ได้รับ', '<span style="color:var(--g-d);font-weight:600">+'+(p.nums.length*5)+' คะแนน</span>']])+
+      `<div class="two-btn" style="margin-top:14px"><button class="btn soft" data-go="toast:บันทึกใบเสร็จแล้ว (จำลอง)">บันทึกใบเสร็จ</button><button class="btn primary" data-go="tab:home">กลับหน้าหลัก</button></div>`}; },
+  /* v29: pay several numbers at once: tick the numbers, total updates live */
+  paybill:t=>{
+    if (t !== '__keep') billSel = new Set(t && t.startsWith('only:') ? [+t.split(':')[1]] : billable());
+    const sel = [...billSel], total = sel.reduce((a,i)=>a+parseFloat(NUMBERS[i].money.v),0);
+    const allOn = billable().every(i=>billSel.has(i));
+    const rows = NUMBERS.map((n,i)=>{
+      if (!billable().includes(i)) return `<div class="billrow off">${brand(n)}<div class="tx"><b>${n.num}</b><small>${n.nick} · เติมเงิน ไม่มีบิล</small></div><span class="link" data-go="sub:topup">เติมเงิน</span></div>`;
+      const on = billSel.has(i);
+      return `<div class="billrow ${on?'on':''}" data-go="fn:billtog:${i}"><span class="chk">${on?ic('check'):''}</span>${brand(n)}
+        <div class="tx"><b>${n.num}</b><small>${n.nick}</small><small class="due ${n.money.over?'over':''}">${n.money.over?n.money.note:'ชำระภายใน '+n.exp.date}</small></div>
+        <b class="amt">${n.money.v} บาท</b></div>`; }).join('');
+    return {title:'จ่ายบิล', html:
+      `<div class="billhead"><span>เลือกเบอร์ที่ต้องการชำระ</span><span class="link" data-go="fn:billall">${allOn?'ยกเลิกทั้งหมด':'เลือกทั้งหมด'}</span></div>
+       <div class="card billlist">${rows}</div>
+`+
+      `<div class="billbar"><div><small>ยอดรวม ${sel.length} เบอร์</small><b class="amt">${money(total)} บาท</b></div>
+       <button class="btn primary" ${sel.length?'':'disabled'} data-go="${sel.length?'sub:paysel':'toast:กรุณาเลือกอย่างน้อย 1 เบอร์'}">ชำระเงิน</button></div>`}; },
   topup:()=>({title:'เติมเงิน',html:`<div class="card"><div class="muted" style="font-size:13px">เติมเงินให้หมายเลข</div><div style="font-size:20px;font-weight:600">${N().num}</div><div class="muted" style="font-size:12.5px;margin-top:4px">${N().money.label} <span class="amt">${N().money.v}</span> บาท</div></div>
     <div class="lbl">เลือกจำนวนเงิน</div><div class="amt-grid js-amt"><div>50</div><div class="on">100</div><div>200</div><div>300</div><div>500</div><div>1,000</div></div><div style="height:14px"></div>`+cta('เติมเงิน','เติมเงินสำเร็จ (จำลอง)')}),
   usage:()=>{ const n=N(); return {title:'เช็กเน็ต/โทร · '+n.num, html:`<div class="card"><div style="font-weight:600">อินเทอร์เน็ต</div>`+
@@ -994,7 +1257,21 @@ const SUB = {
   fibre:()=>({title:'AIS Fibre',html:hero('AIS FIBRE','เน็ตบ้าน 1Gbps<br>เริ่ม 599 บาท','ติดตั้งฟรี','router')+items(['500/500 Mbps | 599 บาท','1000/500 Mbps | 799 บาท','2000/1000 Mbps | 1,299 บาท'],'router')}),
   points:()=>({title:'AIS Points',html:kv([['คะแนนคงเหลือ',fmt(N().pts)+' คะแนน'],['หมดอายุเร็วสุด','12 คะแนน · 30 มิ.ย. 70']])}),
   pointhist:()=>({title:'ประวัติคะแนน',html:kv([['ชำระบิล ก.ย. 69','+12'],['แลกคูปองเฟรนช์ฟรายส์','-99'],['ภารกิจเช็กอิน','+1']])}),
-  mycoupon:()=>({title:'คูปองของฉัน',html:items(['เฟรนช์ฟรายส์ (M) | หมดอายุ 31 ต.ค. 69','ไอศกรีม ลด 50 บาท | หมดอายุ 15 พ.ย. 69','ตั๋วหนังลด 40 บาท | หมดอายุ 30 พ.ย. 69'],'ticket')}),
+  /* v33: coupons collected from คูปองวันนี้ live here; tap to show the code at the shop */
+  mycoupon:()=>{ const list = CPN.filter(c=>cpnState[c.id]);
+    return {title:'คูปองของฉัน', html: list.length ? list.map(c=>{ const used = cpnState[c.id]==='used';
+      return `<div class="card coupon mine ${used?'used':''}" data-go="${used?'toast:ใช้คูปองนี้แล้ว':'sub:cpnuse'}" data-title="${c.id}"><div class="lg t-${c.col}" data-ph="${c.ph}">${ic(c.icon)}</div>
+        <div class="tx"><b>${c.t}</b><small>${c.s}</small><small>หมดอายุ ${c.exp}</small></div>
+        ${used?'<span class="chip">ใช้แล้ว</span>':'<button class="btn primary">ใช้คูปอง</button>'}</div>`; }).join('')
+      : `<div class="card empty">${ic('ticket')}<b>ยังไม่มีคูปอง</b><small>กด "เก็บ" ที่คูปองวันนี้ในหน้าสิทธิพิเศษ แล้วคูปองจะมาอยู่ที่นี่</small>
+         <button class="btn soft" data-go="tab:priv">ไปเก็บคูปอง</button></div>`}; },
+  cpnuse:id=>{ const c = CPN.find(x=>x.id===id) || CPN[0];
+    return {title:'ใช้คูปอง', html:`<div class="card cpnuse"><div class="hero" data-ph="${c.ph}">${ic(c.icon)}</div>
+      <b>${c.t}</b><small>${c.s} · หมดอายุ ${c.exp}</small>
+      <div class="tear"></div>${qrSvg()}<div class="code">${c.code}</div>
+      <div class="muted" style="font-size:12.5px">แสดงหน้านี้ให้พนักงานสแกน · โค้ดหมดอายุใน <b id="qrTimer">15:00</b></div></div>
+      <button class="btn primary full" style="margin-top:4px" data-go="fn:cpnused:${c.id}">พนักงานสแกนแล้ว</button>
+      <div class="muted" style="font-size:11.5px;text-align:center;margin-top:8px">คูปองใช้ได้ 1 ครั้ง</div>`}; },
   transfer:()=>({title:'โอนคะแนน',html:`<div class="card"><div class="muted" style="font-size:13px">คะแนนคงเหลือ</div><div style="font-size:26px;font-weight:600">${fmt(N().pts)} คะแนน</div></div><div class="field"><input placeholder="หมายเลขผู้รับ เช่น 08x-xxx-xxxx"></div><div class="field"><input placeholder="จำนวนคะแนน"></div>`+cta('โอนคะแนน','โอนคะแนนสำเร็จ (จำลอง)')}),
   mission:()=>({title:'ภารกิจ',html:hero('MY MISSION','ทำภารกิจ<br>รับพอยท์เพิ่ม','','flag')+items(['เช็กอินทุกวัน | +1 คะแนน','จ่ายบิลตรงเวลา | +10 คะแนน','ชวนเพื่อนใช้ myAIS | +20 คะแนน'],'flag')}),
   premium:()=>({title:'พรีเมียม',html:items(['AIS Serenade','Lounge สนามบิน','ส่วนลดโรงแรม'],'crown')}),
@@ -1076,8 +1353,13 @@ function run(target, el){
   if (kind==='toast') return toast(arg);
   if (kind==='fn'){
     if (arg.startsWith('pick:')) return pickNumber(+arg.split(':')[1]);
-    if (arg==='hide'){ hideAmt=!hideAmt; $('phone').classList.toggle('hide-amt', hideAmt);
-      const e=document.querySelector('.eye'); e.innerHTML=ic(hideAmt?'eyeoff':'eye'); return toast(hideAmt?'ซ่อนยอดเงินแล้ว':'แสดงยอดเงิน'); }
+    if (arg.startsWith('billtog:')){ const i=+arg.split(':')[1]; billSel.has(i)?billSel.delete(i):billSel.add(i); return rerenderSub(); }
+    if (arg.startsWith('aj:')) return ajAsk(arg.split(':')[1]);
+    if (arg.startsWith('collect:')){ cpnState[arg.split(':')[1]]='kept'; syncCoupons(); return toast('เก็บคูปองแล้ว · ดูได้ที่คูปองของฉัน'); }
+    if (arg.startsWith('cpnused:')){ cpnState[arg.split(':')[1]]='used'; syncCoupons(); back(); return toast('ใช้คูปองเรียบร้อย ขอบคุณที่ใช้บริการ'); }
+    if (arg.startsWith('paydone:')) return payDone(arg.split(':')[1]);
+    if (arg==='billall'){ const all=billable().every(i=>billSel.has(i)); billSel=new Set(all?[]:billable()); return rerenderSub(); }
+    if (arg==='hide'){ setPrivacy(!privacy); return toast(privacy?'โหมดส่วนตัว: ซ่อนยอดเงิน ชื่อ และเบอร์แล้ว':'ปิดโหมดส่วนตัวแล้ว'); }
     if (arg.startsWith('pushgo:')){ closeSheet(); stack=[]; return PUSHES.find(x=>x.id===arg.split(':')[1]).go(); }
     if (arg==='switch'){ const sw=el.querySelector('.switch'); sw.classList.toggle('off'); return toast(sw.classList.contains('off')?'ปิดการแจ้งเตือนนี้แล้ว':'เปิดการแจ้งเตือนนี้แล้ว'); }
     if (arg.startsWith('near:')){ nearCat = arg.split(':')[1]; return renderNear(); }
@@ -1106,6 +1388,8 @@ setInterval(()=>{ secs=Math.max(0,secs-1); const p=n=>String(n).padStart(2,'0');
   $('timer').textContent=`${p(Math.floor(secs/3600))}:${p(Math.floor(secs/60)%60)}:${p(secs%60)}`; },1000);
 
 renderHome(); renderNear(); syncCurrent(); hydrate(); hydrateArt(); hydratePhotos();
+try { if (localStorage.getItem('myais-privacy')==='1') setPrivacy(true); } catch(e){}
+syncCoupons();
 </script>
 </body>
 </html>
