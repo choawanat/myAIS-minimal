@@ -13,7 +13,7 @@
     if(mobileUA||coarse) document.documentElement.classList.add('is-mobile');
   })();
 </script>
-<title>myAIS Minimal v36</title>
+<title>myAIS Minimal v38</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -433,6 +433,25 @@
   #page-sub:has(.chatbar){padding-bottom:0}
   #page-sub:has(.chatbar) .sub-body{min-height:calc(100% - 56px);display:flex;flex-direction:column;padding-bottom:0}
   #page-sub:has(.chatbar) .chatbar{margin-top:auto}
+  .ckin{padding:16px!important}
+  .ckin .top{display:flex;align-items:center;gap:12px}
+  .ckin .badge{width:46px;height:46px;border-radius:15px;background:var(--g-s);color:var(--g-d);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+  .ckin .top b{display:block;font-size:16px;font-weight:600}
+  .ckin .top small{font-size:12px;color:var(--muted)}
+  .ckin .cnt{margin-left:auto;font-size:13px;font-weight:600;color:var(--g-dd);background:var(--g-s);border-radius:10px;padding:3px 10px}
+  .ckin .track{display:grid;grid-template-columns:repeat(4,1fr);margin:20px 0 16px;position:relative}
+  .ckin .track::before{content:"";position:absolute;left:12.5%;right:12.5%;top:19px;height:3px;background:var(--line);border-radius:2px}
+  .ckin .wk{display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;text-align:center}
+  .ckin .wk .dot{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;background:#eef1ea;color:#a9b3a4;border:2px solid #fff;box-shadow:0 0 0 1px var(--line)}
+  .ckin .wk .dot svg{width:20px;height:20px}
+  .ckin .wk.wdone .dot{background:var(--g);color:#fff;box-shadow:none}
+  .ckin .wk.wnow .dot{background:#fff;color:var(--g-d);box-shadow:0 0 0 2px var(--g);animation:ckpulse 1.6s ease-in-out infinite}
+  @keyframes ckpulse{50%{box-shadow:0 0 0 5px rgba(140,198,63,.35)}}
+  .ckin .wk small{font-size:11px;color:var(--muted);line-height:1.3}
+  .ckin .wk em{font-style:normal;font-size:10.5px;font-weight:600;color:var(--g-d)}
+  .rules{display:flex;flex-direction:column;gap:10px}
+  .rules div{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:1.45}
+  .rules svg{width:18px;height:18px;color:var(--g-d);flex:0 0 auto;margin-top:1px}
   .paysec{font-size:16px;font-weight:600;margin:20px 2px 10px}
   .billbar .btn{min-width:150px}
   /* v31: step 1 is short now, so pin the total bar to the bottom of the screen */
@@ -715,7 +734,7 @@
       <div class="p-mid"><div><small>AIS Points</small><div class="v"><span class="js-pts"></span><span>คะแนน</span></div></div><div class="exp js-ptsexp"></div></div>
       <div class="pts-acts">
         <div data-go="sub:redeemlist"><i data-i="gift"></i>แลกคะแนน</div>
-        <div data-go="sub:transfer"><i data-i="swap"></i>โอนคะแนน</div>
+        <div data-go="sub:mission"><i data-i="flag"></i>ภารกิจ</div>
         <div data-go="sub:mycoupon"><i data-i="ticket"></i>คูปองของฉัน</div>
         <div data-go="sub:pointhist"><i data-i="history"></i>ประวัติ</div>
       </div>
@@ -723,7 +742,7 @@
 
     <div class="sec"><h3>หมวดสิทธิพิเศษ</h3></div>
     <div class="card qa-grid">
-      <div class="qa" data-go="sub:mission"><div class="ico t-sun"><i data-i="flag"></i></div>ภารกิจ</div>
+      <div class="qa" data-go="sub:redeemlist"><div class="ico t-sun"><i data-i="food"></i></div>ดีลร้านอาหาร</div>
       <div class="qa" data-go="sub:premium"><div class="ico t-lav"><i data-i="crown"></i></div>พรีเมียม</div>
       <div class="qa" data-go="sub:lucky"><div class="ico t-rose"><i data-i="gift"></i></div>ลุ้นรางวัล</div>
       <div class="qa" data-go="fn:map"><div class="ico t-sky"><i data-i="pin"></i></div>ใกล้ฉัน</div>
@@ -984,13 +1003,19 @@ const PAYM = {
   line:{name:'Rabbit LINE Pay', sub:'พาร์ทเนอร์ AIS', icon:'chat'}};
 const payMethods = n => '<div class="card list">'+Object.entries(PAYM).map(([k,m])=>
   `<div class="li" data-go="${n?'sub:paym':'toast:กรุณาเลือกอย่างน้อย 1 เบอร์'}" data-title="${k}"><div class="ico ${k==='line'?'line':''}">${ic(m.icon)}</div><div class="tx"><b>${m.name}</b><small>${m.sub}</small></div>${ic('chev','chev')}</div>`).join('')+'</div>';
-const payTotal = () => [...billSel].reduce((a,i)=>a+parseFloat(NUMBERS[i].money.v),0);
-const paySummary = () => `<div class="card paysum"><small>ยอดชำระ ${billSel.size} เบอร์</small><b class="amt">${money(payTotal())} บาท</b>
-  <div class="nums">${[...billSel].map(i=>`<span>${NUMBERS[i].num}</span>`).join('')}</div></div>`;
+/* v37: the same payment steps serve bills and prepaid top-up; payCtx = null (bills) or {i, amt} (top-up) */
+let payCtx = null;
+const payNums = () => payCtx ? [payCtx.i] : [...billSel];
+const payTotal = () => payCtx ? payCtx.amt : [...billSel].reduce((a,i)=>a+parseFloat(NUMBERS[i].money.v),0);
+const paySummary = () => `<div class="card paysum"><small>${payCtx?'ยอดเติมเงิน':'ยอดชำระ '+billSel.size+' เบอร์'}</small><b class="amt">${money(payTotal())} บาท</b>
+  <div class="nums">${payNums().map(i=>`<span>${NUMBERS[i].num}</span>`).join('')}</div></div>`;
 const qrSvg = () => { let r=''; let x=7; for(let i=0;i<21;i++) for(let j=0;j<21;j++){ x=(x*73+41)%997;
   const fin=(i<7&&j<7)||(i<7&&j>13)||(i>13&&j<7); const ring=fin&&((i%14===0||i%14===6||j%14===0||j%14===6)||(i%14>1&&i%14<5&&j%14>1&&j%14<5));
   if(fin?ring:x%2) r+=`<rect x="${j}" y="${i}" width="1" height="1"/>`; } return `<svg viewBox="-1 -1 23 23" class="qrimg">${r}</svg>`; };
 let lastPay = null;
+/* v38: check-in weeks; mock today = 28 ต.ค. 69 (week 2) */
+const CKIN = [['19–25 ต.ค.','done'],['26 ต.ค.–1 พ.ย.','now'],['2–8 พ.ย.','next'],['9–15 พ.ย.','next']];
+let ckDone = false;
 /* v35: น้องอุ่นใจ chatbot (simulated answers + quick replies) */
 const AJ_HEAD = 'data:image/webp;base64,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', AJ_FULL = 'data:image/webp;base64,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';
 const AJ = {
@@ -1022,7 +1047,7 @@ function syncCoupons(){
 }
 setInterval(()=>{ const t=document.getElementById('qrTimer'); if(!t) return; const [m,s2]=t.textContent.split(':').map(Number); const v=Math.max(0,m*60+s2-1);
   t.textContent=`${String(Math.floor(v/60)).padStart(2,'0')}:${String(v%60).padStart(2,'0')}`; },1000);
-function payDone(method){ lastPay = {method, total:payTotal(), nums:[...billSel].map(i=>NUMBERS[i].num), ref:'AIS'+String(Date.now()).slice(-8)};
+function payDone(method){ lastPay = {method, topup:!!payCtx, total:payTotal(), nums:payNums().map(i=>NUMBERS[i].num), ref:'AIS'+String(Date.now()).slice(-8)};
   openSub('paydone'); stack = []; }
 function rerenderSub(){ const p=$('page-sub'), y=p.scrollTop; renderSub(p.dataset.cur, '__keep'); p.scrollTop=y; }
 /* v28: privacy mode = hide every money amount and partly mask name / phone numbers with x.
@@ -1187,7 +1212,7 @@ const SUB = {
       <form class="chatbar" onsubmit="event.preventDefault(); const i=this.querySelector('input'); if(i.value.trim()){ const v=i.value.trim(); ajAsk(/เจ้าหน้าที่/.test(v)?'staff':/บิล|ค้าง|จ่าย/.test(v)?'bill':/เน็ต/.test(v)?'net':/คะแนน|พอยท์|point/i.test(v)?'pts':'', v); }">
         <input placeholder="พิมพ์ข้อความถึงอุ่นใจ..."><button class="send" type="submit">${ic('chev')}</button></form>`}),
   /* v31: step 2 = choose how to pay (step 1 = choose numbers) */
-  paysel:()=>({title:'เลือกช่องทางชำระเงิน', html:paySummary()+'<div class="paysec">ชำระด้วย</div>'+payMethods(billSel.size)}),
+  paysel:()=>({title:'เลือกช่องทางชำระเงิน', html:paySummary()+'<div class="paysec">ชำระด้วย</div>'+payMethods(payNums().length)}),
   paym:k=>{ const m=PAYM[k]||PAYM.bank; let body='';
     if (k==='bank') body = '<div class="lbl">เลือกธนาคาร ระบบจะเปิดแอปธนาคารเพื่อยืนยัน</div><div class="card banks">'+
       [['K PLUS','กสิกรไทย','#138f2d'],['SCB EASY','ไทยพาณิชย์','#4e2a84'],['Krungthai NEXT','กรุงไทย','#1ba5e1'],['Bualuang mBanking','กรุงเทพ','#1e4598'],['KMA','กรุงศรี','#fec43b'],['ttb touch','ทีทีบี','#0050f0']]
@@ -1207,12 +1232,14 @@ const SUB = {
       <button class="btn full lpbtn" style="margin-top:14px" data-go="fn:paydone:line">เปิด LINE เพื่อชำระ</button>`;
     return {title:m.name, html:paySummary()+body}; },
   paydone:()=>{ const p=lastPay||{method:'bank',total:0,nums:[],ref:'-'};
-    return {title:'ชำระเงินสำเร็จ', html:`<div class="card done"><div class="ok">${ic('check')}</div><b>ชำระเงินสำเร็จ</b>
+    const word = p.topup ? 'เติมเงินสำเร็จ' : 'ชำระเงินสำเร็จ';
+    return {title:word, html:`<div class="card done"><div class="ok">${ic('check')}</div><b>${word}</b>
       <div class="big amt">${money(p.total)} บาท</div><small>ผ่าน ${PAYM[p.method].name}</small></div>`+
-      kv([['หมายเลข', p.nums.join('<br>')],['เลขที่อ้างอิง', p.ref],['วันที่', '28 ต.ค. 69 · 10:42 น.'],['คะแนนที่ได้รับ', '<span style="color:var(--g-d);font-weight:600">+'+(p.nums.length*5)+' คะแนน</span>']])+
+      kv([['หมายเลข', p.nums.join('<br>')],['เลขที่อ้างอิง', p.ref],['วันที่', '28 ต.ค. 69 · 10:42 น.'],['คะแนนที่ได้รับ', '<span style="color:var(--g-d);font-weight:600">+'+(p.topup?Math.floor(p.total/100):p.nums.length*5)+' คะแนน</span>']])+
       `<div class="two-btn" style="margin-top:14px"><button class="btn soft" data-go="toast:บันทึกใบเสร็จแล้ว (จำลอง)">บันทึกใบเสร็จ</button><button class="btn primary" data-go="tab:home">กลับหน้าหลัก</button></div>`}; },
   /* v29: pay several numbers at once: tick the numbers, total updates live */
   paybill:t=>{
+    payCtx = null;
     if (t !== '__keep') billSel = new Set(t && t.startsWith('only:') ? [+t.split(':')[1]] : billable());
     const sel = [...billSel], total = sel.reduce((a,i)=>a+parseFloat(NUMBERS[i].money.v),0);
     const allOn = billable().every(i=>billSel.has(i));
@@ -1228,8 +1255,12 @@ const SUB = {
 `+
       `<div class="billbar"><div><small>ยอดรวม ${sel.length} เบอร์</small><b class="amt">${money(total)} บาท</b></div>
        <button class="btn primary" ${sel.length?'':'disabled'} data-go="${sel.length?'sub:paysel':'toast:กรุณาเลือกอย่างน้อย 1 เบอร์'}">ชำระเงิน</button></div>`}; },
-  topup:()=>({title:'เติมเงิน',html:`<div class="card"><div class="muted" style="font-size:13px">เติมเงินให้หมายเลข</div><div style="font-size:20px;font-weight:600">${N().num}</div><div class="muted" style="font-size:12.5px;margin-top:4px">${N().money.label} <span class="amt">${N().money.v}</span> บาท</div></div>
-    <div class="lbl">เลือกจำนวนเงิน</div><div class="amt-grid js-amt"><div>50</div><div class="on">100</div><div>200</div><div>300</div><div>500</div><div>1,000</div></div><div style="height:14px"></div>`+cta('เติมเงิน','เติมเงินสำเร็จ (จำลอง)')}),
+  /* v37: top-up = choose amount, then the same "เลือกช่องทางชำระเงิน" step as bills */
+  topup:()=>{ const i = NUMBERS[current].type==='เติมเงิน' ? current : NUMBERS.findIndex(n=>n.type==='เติมเงิน'), n = NUMBERS[i];
+    const amt = payCtx && payCtx.i===i ? payCtx.amt : 100; payCtx = {i, amt};
+    return {title:'เติมเงิน', html:`<div class="card"><div class="muted" style="font-size:13px">เติมเงินให้หมายเลข</div><div style="font-size:20px;font-weight:600">${n.num}</div><div class="muted" style="font-size:12.5px;margin-top:4px">${n.money.label} <span class="amt">${n.money.v} บาท</span></div></div>
+    <div class="lbl">เลือกจำนวนเงิน</div><div class="amt-grid js-amt js-topamt">${[50,100,200,300,500,1000].map(v=>`<div data-v="${v}" class="${v===amt?'on':''}">${v.toLocaleString('en-US')}</div>`).join('')}</div>
+    <div class="billbar"><div><small>ยอดเติมเงิน</small><b class="amt js-topsum">${money(amt)} บาท</b></div><button class="btn primary" data-go="sub:paysel">ชำระเงิน</button></div>`}; },
   usage:()=>{ const n=N(); return {title:'เช็กเน็ต/โทร · '+n.num, html:`<div class="card"><div style="font-weight:600">อินเทอร์เน็ต</div>`+
     (n.data.unlimited?`<div class="bar"><i style="width:100%"></i></div><div class="muted" style="font-size:12.5px;margin-top:6px">ไม่จำกัด · ${n.data.sub}</div>`
       :`<div class="bar ${isLowData(n)?'low':''}"><i style="width:${Math.round(n.data.left/n.data.total*100)}%"></i></div><div class="muted" style="font-size:12.5px;margin-top:6px">เหลือ ${n.data.left} GB จาก ${n.data.total} GB</div>`)+`</div>`+
@@ -1273,7 +1304,19 @@ const SUB = {
       <button class="btn primary full" style="margin-top:4px" data-go="fn:cpnused:${c.id}">พนักงานสแกนแล้ว</button>
       <div class="muted" style="font-size:11.5px;text-align:center;margin-top:8px">คูปองใช้ได้ 1 ครั้ง</div>`}; },
   transfer:()=>({title:'โอนคะแนน',html:`<div class="card"><div class="muted" style="font-size:13px">คะแนนคงเหลือ</div><div style="font-size:26px;font-weight:600">${fmt(N().pts)} คะแนน</div></div><div class="field"><input placeholder="หมายเลขผู้รับ เช่น 08x-xxx-xxxx"></div><div class="field"><input placeholder="จำนวนคะแนน"></div>`+cta('โอนคะแนน','โอนคะแนนสำเร็จ (จำลอง)')}),
-  mission:()=>({title:'ภารกิจ',html:hero('MY MISSION','ทำภารกิจ<br>รับพอยท์เพิ่ม','','flag')+items(['เช็กอินทุกวัน | +1 คะแนน','จ่ายบิลตรงเวลา | +10 คะแนน','ชวนเพื่อนใช้ myAIS | +20 คะแนน'],'flag')}),
+  /* v38: weekly check-in challenge (modelled on the real "ภารกิจท้าเช็คอิน" campaign) */
+  mission:()=>{ const wk = CKIN.map(([d,st],i)=>{ const s2 = i===1 && ckDone ? 'done' : st;
+      return `<div class="wk w${s2}"><span class="dot">${s2==='done'?ic('check'):'P'}</span><small>${d}</small>${s2==='now'?'<em>สัปดาห์นี้</em>':''}</div>`; }).join('');
+    const got = CKIN.filter(([,st],i)=>st==='done' || (i===1 && ckDone)).length;
+    return {title:'ภารกิจ', html:`<div class="card ckin">
+      <div class="top"><div class="badge">${ic('flag')}</div><div><b>ภารกิจท้าเช็กอิน</b><small>เล่นได้ถึง 15 พ.ย. 69</small></div><span class="cnt">${got}/4</span></div>
+      <div class="track">${wk}</div>
+      <button class="btn ${ckDone?'soft':'primary'} full" data-go="${ckDone?'toast:สัปดาห์นี้เช็กอินแล้ว กลับมาใหม่สัปดาห์หน้านะ':'fn:checkin'}">${ckDone?'เช็กอินแล้ว':'เช็กอินรับ 1 คะแนน'}</button></div>
+      <div class="lbl">กติกา</div><div class="card rules">
+        <div>${ic('check')}<span>เช็กอินได้สัปดาห์ละ 1 ครั้ง รับ 1 คะแนน</span></div>
+        <div>${ic('gift')}<span>เช็กอินครบ 4 สัปดาห์ รับโบนัสเพิ่ม 5 คะแนน</span></div>
+        <div>${ic('cal')}<span>สัปดาห์ที่พลาดไป เช็กอินย้อนหลังไม่ได้</span></div></div>
+      <div class="lbl">ภารกิจอื่น</div>`+items(['จ่ายบิลตรงเวลา | +10 คะแนน','ชวนเพื่อนใช้ myAIS | +20 คะแนน','อัปเดตข้อมูลซิมให้เป็นปัจจุบัน | +5 คะแนน'],'flag')}; },
   premium:()=>({title:'พรีเมียม',html:items(['AIS Serenade','Lounge สนามบิน','ส่วนลดโรงแรม'],'crown')}),
   lucky:()=>({title:'ลุ้นรางวัล',html:hero('LUCKY DRAW','ลุ้นโชคส่งท้ายปี<br>รวม 3 ล้านบาท','ใช้ 10 คะแนน / สิทธิ์','gift')+cta('ใช้ 10 คะแนน ลุ้นรางวัล','ส่งสิทธิ์ลุ้นรางวัลแล้ว (จำลอง)')}),
   coupon:t=>({title:t||'คูปอง',html:hero('COUPON',t||'คูปอง','','ticket')+kv([['ใช้คะแนน','ตามเงื่อนไขร้านค้า'],['หมดอายุ','31 ธ.ค. 69']])+cta('เก็บคูปอง','เก็บคูปองเรียบร้อยแล้ว')}),
@@ -1355,6 +1398,7 @@ function run(target, el){
     if (arg.startsWith('pick:')) return pickNumber(+arg.split(':')[1]);
     if (arg.startsWith('billtog:')){ const i=+arg.split(':')[1]; billSel.has(i)?billSel.delete(i):billSel.add(i); return rerenderSub(); }
     if (arg.startsWith('aj:')) return ajAsk(arg.split(':')[1]);
+    if (arg==='checkin'){ ckDone = true; rerenderSub(); return toast('เช็กอินสำเร็จ รับ 1 คะแนน'); }
     if (arg.startsWith('collect:')){ cpnState[arg.split(':')[1]]='kept'; syncCoupons(); return toast('เก็บคูปองแล้ว · ดูได้ที่คูปองของฉัน'); }
     if (arg.startsWith('cpnused:')){ cpnState[arg.split(':')[1]]='used'; syncCoupons(); back(); return toast('ใช้คูปองเรียบร้อย ขอบคุณที่ใช้บริการ'); }
     if (arg.startsWith('paydone:')) return payDone(arg.split(':')[1]);
@@ -1375,7 +1419,9 @@ function run(target, el){
 // One delegated click handler: innermost [data-go] wins; [data-n] selects that number first
 $('phone').addEventListener('click', e=>{
   const amt = e.target.closest('.js-amt div');
-  if (amt){ amt.parentNode.querySelectorAll('div').forEach(d=>d.classList.remove('on')); amt.classList.add('on'); return; }
+  if (amt){ amt.parentNode.querySelectorAll('div').forEach(d=>d.classList.remove('on')); amt.classList.add('on');
+    if (amt.dataset.v && payCtx){ payCtx.amt = +amt.dataset.v; const t=document.querySelector('.js-topsum'); if (t) t.textContent = money(payCtx.amt)+' บาท'; }
+    return; }
   const el = e.target.closest('[data-go]'); if(!el) return;
   const owner = el.closest('[data-n]');
   if (owner && +owner.dataset.n !== current){ current = +owner.dataset.n; syncCurrent(); }
