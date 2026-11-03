@@ -13,7 +13,7 @@
     if(mobileUA||coarse) document.documentElement.classList.add('is-mobile');
   })();
 </script>
-<title>myAIS Minimal v38</title>
+<title>myAIS Minimal v39</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -1032,10 +1032,15 @@ function ajAsk(k, text){ const a = AJ[k];
   const p=$('page-sub'); renderSub('chat', '__keep'); p.scrollTop = p.scrollHeight; }
 /* v33: today's coupons; cpnState[id] = 'kept' | 'used' */
 const CPN = [
-  {id:'fries', t:'เฟรนช์ฟรายส์ (M) ฟรี', s:'ร้านฟาสต์ฟู้ดที่ร่วมรายการ', exp:'31 ต.ค. 69', ph:'fries', icon:'food', col:'sun', code:'AIS-FRY-4821'},
-  {id:'icecream', t:'ไอศกรีม ลด 50 บาท', s:'ขั้นต่ำ 300 บาท', exp:'15 พ.ย. 69', ph:'icecream', icon:'food', col:'rose', code:'AIS-ICE-7305'},
-  {id:'popcorn', t:'ตั๋วหนังลด 40 บาท', s:'ทุกวันพุธ ทุกสาขา', exp:'30 พ.ย. 69', ph:'popcorn', icon:'play', col:'lav', code:'AIS-MOV-1964'}];
-const cpnState = {};
+  {id:'fries', t:'เฟรนช์ฟรายส์ (M) ฟรี', s:'ร้านฟาสต์ฟู้ดที่ร่วมรายการ', exp:'31 ต.ค. 69', ph:'fries', icon:'food', col:'sun', code:'AIS-FRY-4821', pts:99},
+  {id:'icecream', t:'ไอศกรีม ลด 50 บาท', s:'ขั้นต่ำ 300 บาท', exp:'15 พ.ย. 69', ph:'icecream', icon:'food', col:'rose', code:'AIS-ICE-7305', pts:100},
+  {id:'popcorn', t:'ตั๋วหนังลด 40 บาท', s:'ทุกวันพุธ ทุกสาขา', exp:'30 พ.ย. 69', ph:'popcorn', icon:'play', col:'lav', code:'AIS-MOV-1964', pts:80},
+  /* v39: 1-point rewards, matched by their card title */
+  {id:'tote', t:'กระเป๋าผ้า', s:'รับที่ AIS Shop ทุกสาขา', exp:'31 ธ.ค. 69', ph:'tote', icon:'bag', col:'mint', code:'AIS-BAG-0311', pts:1},
+  {id:'gyoza', t:'เกี๊ยวซ่า 5 ชิ้น', s:'ร้านอาหารญี่ปุ่นที่ร่วมรายการ', exp:'30 พ.ย. 69', ph:'gyoza', icon:'food', col:'peach', code:'AIS-GYZ-5520', pts:1},
+  {id:'coffee', t:'ส่วนลดกาแฟ 20 บาท', s:'ร้านกาแฟที่ร่วมรายการ', exp:'30 พ.ย. 69', ph:'coffee', icon:'coffee', col:'sun', code:'AIS-CAF-2048', pts:1},
+  {id:'net1d', t:'เน็ตฟรี 1 วัน', s:'ความเร็ว 6Mbps ใช้ได้ 24 ชม.', exp:'31 ธ.ค. 69', ph:'phone', icon:'wifi', col:'sky', code:'', pts:1, net:true}];
+const cpnState = {}; let lastCpn = '';
 function syncCoupons(){
   document.querySelectorAll('.js-cbtn').forEach(b=>{ const st = cpnState[b.dataset.c];
     b.textContent = st==='used' ? 'ใช้แล้ว' : st ? 'ใช้' : 'เก็บ';
@@ -1319,7 +1324,15 @@ const SUB = {
       <div class="lbl">ภารกิจอื่น</div>`+items(['จ่ายบิลตรงเวลา | +10 คะแนน','ชวนเพื่อนใช้ myAIS | +20 คะแนน','อัปเดตข้อมูลซิมให้เป็นปัจจุบัน | +5 คะแนน'],'flag')}; },
   premium:()=>({title:'พรีเมียม',html:items(['AIS Serenade','Lounge สนามบิน','ส่วนลดโรงแรม'],'crown')}),
   lucky:()=>({title:'ลุ้นรางวัล',html:hero('LUCKY DRAW','ลุ้นโชคส่งท้ายปี<br>รวม 3 ล้านบาท','ใช้ 10 คะแนน / สิทธิ์','gift')+cta('ใช้ 10 คะแนน ลุ้นรางวัล','ส่งสิทธิ์ลุ้นรางวัลแล้ว (จำลอง)')}),
-  coupon:t=>({title:t||'คูปอง',html:hero('COUPON',t||'คูปอง','','ticket')+kv([['ใช้คะแนน','ตามเงื่อนไขร้านค้า'],['หมดอายุ','31 ธ.ค. 69']])+cta('เก็บคูปอง','เก็บคูปองเรียบร้อยแล้ว')}),
+  /* v39: coupon detail = keep for later OR redeem right away */
+  coupon:t=>{ if (t==='__keep') t = lastCpn; else lastCpn = t; const c = CPN.find(x=>x.t===t || x.id===t); if (!c) return {title:t||'คูปอง', html:hero('COUPON',t||'คูปอง','','ticket')+cta('เก็บคูปอง','เก็บคูปองเรียบร้อยแล้ว')};
+    const st = cpnState[c.id];
+    const acts = st==='used' ? `<button class="btn soft full" disabled>ใช้คูปองนี้แล้ว</button>`
+      : st ? `<button class="btn primary full" data-go="sub:cpnuse" data-title="${c.id}">ใช้คูปอง</button>`
+      : `<div class="two-btn"><button class="btn soft" data-go="fn:keep:${c.id}">เก็บไว้ก่อน</button><button class="btn primary" data-go="fn:redeem:${c.id}">แลกเลย</button></div>`;
+    return {title:c.t, html:`<div class="card cpnuse"><div class="hero" data-ph="${c.ph}">${ic(c.icon)}</div><b>${c.t}</b><small>${c.s}</small></div>`+
+      kv([['ใช้คะแนน', `<b style="color:var(--g-dd)">${c.pts} คะแนน</b>`],['หมดอายุ', c.exp],['เงื่อนไข', c.net?'เน็ตเข้าเบอร์ทันทีหลังแลก':'แสดงโค้ดให้พนักงานภายในวันหมดอายุ']])+acts+
+      (st?'':`<div class="muted" style="font-size:11.5px;text-align:center;margin-top:8px">"เก็บไว้ก่อน" ไปอยู่ที่คูปองของฉัน · "แลกเลย" ใช้ได้ทันที</div>`)}; },
   redeemlist:()=>({title:'แลกคะแนน',html:items(['กระเป๋าผ้า | 1 คะแนน','เกี๊ยวซ่า 5 ชิ้น | 1 คะแนน','ส่วนลดกาแฟ 20 บาท | 1 คะแนน','เน็ตฟรี 1 วัน | 1 คะแนน'],'gift')}),
   nearby:()=>({title:'สิทธิพิเศษใกล้คุณ',html:'<div class="card list">'+[...SHOPS].sort((a,b)=>parseInt(a.dist)-parseInt(b.dist)).map(s=>`<div class="li" data-go="toast:${s.name} · ${s.deal} (จำลอง)"><div class="ico t-${s.col}" data-ph="${s.ph}">${ic(s.icon)}</div><div class="tx"><b>${s.name}</b><small>${s.dist} · <span class="left ${leftFew(s)?'few':''}">เหลือ ${s.left} สิทธิ์</span> · แลกรับ ${s.deal}</small>${s.hot?'<span class="hot">คุ้มพิเศษ</span>':''}</div><span class="r">${s.pts} P</span></div>`).join('')+'</div>'}),
   myqr:()=>({title:'QR ของฉัน',html:`<div class="card" style="text-align:center;padding:24px"><div style="width:180px;height:180px;margin:0 auto;border-radius:16px;background:var(--g-s);color:var(--g-d);display:flex;align-items:center;justify-content:center">${ic('qr').replace('class="i ','style="width:120px;height:120px" class="')}</div><div style="margin-top:12px;font-weight:600">${N().num}</div><div class="muted" style="font-size:12.5px">ให้ผู้อื่นสแกนเพื่อโอนคะแนน / เติมเงิน</div></div>`}),
@@ -1399,6 +1412,10 @@ function run(target, el){
     if (arg.startsWith('billtog:')){ const i=+arg.split(':')[1]; billSel.has(i)?billSel.delete(i):billSel.add(i); return rerenderSub(); }
     if (arg.startsWith('aj:')) return ajAsk(arg.split(':')[1]);
     if (arg==='checkin'){ ckDone = true; rerenderSub(); return toast('เช็กอินสำเร็จ รับ 1 คะแนน'); }
+    if (arg.startsWith('keep:')){ cpnState[arg.split(':')[1]]='kept'; syncCoupons(); rerenderSub(); return toast('เก็บคูปองแล้ว · ดูได้ที่คูปองของฉัน'); }
+    if (arg.startsWith('redeem:')){ const c = CPN.find(x=>x.id===arg.split(':')[1]);
+      if (c.net){ cpnState[c.id]='used'; syncCoupons(); rerenderSub(); return toast(`เพิ่มเน็ตฟรี 1 วันให้ ${N().num} แล้ว`); }
+      cpnState[c.id]='kept'; syncCoupons(); return openSub('cpnuse', c.id); }
     if (arg.startsWith('collect:')){ cpnState[arg.split(':')[1]]='kept'; syncCoupons(); return toast('เก็บคูปองแล้ว · ดูได้ที่คูปองของฉัน'); }
     if (arg.startsWith('cpnused:')){ cpnState[arg.split(':')[1]]='used'; syncCoupons(); back(); return toast('ใช้คูปองเรียบร้อย ขอบคุณที่ใช้บริการ'); }
     if (arg.startsWith('paydone:')) return payDone(arg.split(':')[1]);
