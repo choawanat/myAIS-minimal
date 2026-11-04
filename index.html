@@ -13,7 +13,7 @@
     if(mobileUA||coarse) document.documentElement.classList.add('is-mobile');
   })();
 </script>
-<title>myAIS Minimal v39</title>
+<title>myAIS Minimal v40</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -717,10 +717,9 @@
   <section class="page no-nav" id="page-scan">
     <div class="scan-head"><span class="back" data-go="back"><i data-i="back"></i></span>สแกน QR / บาร์โค้ด</div>
     <div class="scan-cam"><div class="scan-frame"><i></i><i></i><i></i><i></i><div class="scan-line"></div></div><div class="scan-tip">วาง QR หรือบาร์โค้ดให้อยู่ในกรอบ</div></div>
-    <div class="scan-foot">
+    <div class="scan-foot"><!-- v40: "QR ของฉัน" removed: myAIS has no point transfer -->
       <div><div class="ico" id="flashBtn" data-go="fn:flash"><i data-i="flash"></i></div><div class="lbl">ไฟฉาย</div></div>
       <div><div class="ico" data-go="toast:เปิดคลังรูปภาพ (จำลอง)"><i data-i="image"></i></div><div class="lbl">รูปภาพ</div></div>
-      <div><div class="ico" data-go="sub:myqr"><i data-i="qr"></i></div><div class="lbl">QR ของฉัน</div></div>
     </div>
   </section>
 
@@ -1308,7 +1307,6 @@ const SUB = {
       <div class="muted" style="font-size:12.5px">แสดงหน้านี้ให้พนักงานสแกน · โค้ดหมดอายุใน <b id="qrTimer">15:00</b></div></div>
       <button class="btn primary full" style="margin-top:4px" data-go="fn:cpnused:${c.id}">พนักงานสแกนแล้ว</button>
       <div class="muted" style="font-size:11.5px;text-align:center;margin-top:8px">คูปองใช้ได้ 1 ครั้ง</div>`}; },
-  transfer:()=>({title:'โอนคะแนน',html:`<div class="card"><div class="muted" style="font-size:13px">คะแนนคงเหลือ</div><div style="font-size:26px;font-weight:600">${fmt(N().pts)} คะแนน</div></div><div class="field"><input placeholder="หมายเลขผู้รับ เช่น 08x-xxx-xxxx"></div><div class="field"><input placeholder="จำนวนคะแนน"></div>`+cta('โอนคะแนน','โอนคะแนนสำเร็จ (จำลอง)')}),
   /* v38: weekly check-in challenge (modelled on the real "ภารกิจท้าเช็คอิน" campaign) */
   mission:()=>{ const wk = CKIN.map(([d,st],i)=>{ const s2 = i===1 && ckDone ? 'done' : st;
       return `<div class="wk w${s2}"><span class="dot">${s2==='done'?ic('check'):'P'}</span><small>${d}</small>${s2==='now'?'<em>สัปดาห์นี้</em>':''}</div>`; }).join('');
@@ -1335,7 +1333,6 @@ const SUB = {
       (st?'':`<div class="muted" style="font-size:11.5px;text-align:center;margin-top:8px">"เก็บไว้ก่อน" ไปอยู่ที่คูปองของฉัน · "แลกเลย" ใช้ได้ทันที</div>`)}; },
   redeemlist:()=>({title:'แลกคะแนน',html:items(['กระเป๋าผ้า | 1 คะแนน','เกี๊ยวซ่า 5 ชิ้น | 1 คะแนน','ส่วนลดกาแฟ 20 บาท | 1 คะแนน','เน็ตฟรี 1 วัน | 1 คะแนน'],'gift')}),
   nearby:()=>({title:'สิทธิพิเศษใกล้คุณ',html:'<div class="card list">'+[...SHOPS].sort((a,b)=>parseInt(a.dist)-parseInt(b.dist)).map(s=>`<div class="li" data-go="toast:${s.name} · ${s.deal} (จำลอง)"><div class="ico t-${s.col}" data-ph="${s.ph}">${ic(s.icon)}</div><div class="tx"><b>${s.name}</b><small>${s.dist} · <span class="left ${leftFew(s)?'few':''}">เหลือ ${s.left} สิทธิ์</span> · แลกรับ ${s.deal}</small>${s.hot?'<span class="hot">คุ้มพิเศษ</span>':''}</div><span class="r">${s.pts} P</span></div>`).join('')+'</div>'}),
-  myqr:()=>({title:'QR ของฉัน',html:`<div class="card" style="text-align:center;padding:24px"><div style="width:180px;height:180px;margin:0 auto;border-radius:16px;background:var(--g-s);color:var(--g-d);display:flex;align-items:center;justify-content:center">${ic('qr').replace('class="i ','style="width:120px;height:120px" class="')}</div><div style="margin-top:12px;font-weight:600">${N().num}</div><div class="muted" style="font-size:12.5px">ให้ผู้อื่นสแกนเพื่อโอนคะแนน / เติมเงิน</div></div>`}),
   account:()=>({title:'ข้อมูลบัญชี',html:kv([['ชื่อ','ธนากร วงศ์xxx'],['อีเมล','thanakorn.w@example.com'],['เชื่อมต่อ','AIS ID']])}),
   settings:()=>({title:'ตั้งค่า',html:items(['ภาษา','การแจ้งเตือน','รหัสผ่าน / Face ID','วิดเจ็ตหน้าจอ | แสดงยอดคงเหลือบนหน้าจอโทรศัพท์','เกี่ยวกับแอป'],'gear')}),
   addnum:()=>({title:'เพิ่มหมายเลข',html:`<div class="field"><input placeholder="กรอกหมายเลข AIS / Fibre"></div>`+cta('ขอรหัส OTP','ส่ง OTP แล้ว (จำลอง)')}),
